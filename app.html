@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>好康复 · 安卓版下载</title>
+<meta name="theme-color" content="#ECF1EE">
+<style>
+:root{--bg:#ECF1EE;--surface:#FFFFFF;--ink:#13201A;--muted:#55675E;--line:#D0DBD5;--accent:#0A7761;--on-accent:#FFFFFF;--soft:#F6E7CC}
+@media (prefers-color-scheme: dark){:root{--bg:#0B1210;--surface:#131D19;--ink:#E2EBE6;--muted:#91A69C;--line:#25332E;--accent:#3AC6A0;--on-accent:#03221A;--soft:#38290F;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","HarmonyOS Sans SC","MiSans","Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+main{max-width:480px;margin:0 auto;padding:44px 16px 32px}
+h1{font-size:28px;line-height:1.25;margin:0 0 8px}
+p{margin:0 0 10px;color:var(--muted)}
+a{color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;margin:20px 0 16px}
+.card p{margin:0}
+.ver{font-size:14px}
+.btn{display:block;border-radius:14px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:18px;padding:14px;margin:14px 0 12px;text-align:center;text-decoration:none}
+.alt{border-top:1px solid var(--line);margin-top:4px;padding-top:14px;font-size:14px}
+.alt b{color:var(--ink);letter-spacing:1px}
+.ok{color:var(--accent);font-weight:600;font-size:14px;min-height:1.6em;margin-top:6px}
+.tip{background:var(--soft);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:14px}
+.fine{font-size:13px}
+</style>
+</head>
+<body>
+<main>
+<h1>好康复 安卓版</h1>
+<p>免费，不用注册，安卓 7.0 及以上可用。</p>
+<p class="tip" id="inapp" hidden>现在是在微信、小红书这类 App 里，下载不了安装包。点右上角「···」，选「在浏览器打开」。</p>
+<div class="card">
+<p class="ver">版本 2.0 · 约 0.7 MB</p>
+<a class="btn" href="haokangfu-2.0.apk" download>下载安装包</a>
+<p class="fine">下载完点开安装。提示「未知来源」或「风险应用」时，选允许、继续安装。</p>
+<div class="alt">
+<p>下载不动的话，用备用地址（蓝奏云，密码 <b>cm0y</b>）：</p>
+<a id="go" href="https://wwbwn.lanzout.com/iDdSK4fo8zmj">复制密码，打开蓝奏云</a>
+<div class="ok" id="ok"></div>
+</div>
+</div>
+<p class="fine">iPhone 暂时没有 App，可以先用网页版代替，功能比 App 少一些：没有到点提醒，别的 App 一出声音，带练语音会停。<a href="./">打开网页版</a></p>
+<p class="fine">个人制作的免费 App，不是医院官方出品；康复怎么做，以医生和康复师的嘱咐为准。</p>
+</main>
+<script>
+var go = document.getElementById('go');
+if (/MicroMessenger|wxwork|xhsdiscover|XiaoHongShu|aweme| QQ\//i.test(navigator.userAgent)) document.getElementById('inapp').hidden = false;
+go.addEventListener('click', function (e) {
+  if (!(navigator.clipboard && navigator.clipboard.writeText)) return;
+  e.preventDefault();
+  var open = function () { location.href = go.href; };
+  navigator.clipboard.writeText('cm0y').then(function () {
+    document.getElementById('ok').textContent = '密码已复制，到蓝奏云粘贴就行';
+    setTimeout(open, 700);
+  }, open);
+});
+</script>
+</body>
+</html>

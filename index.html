@@ -1,0 +1,1961 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>好康复</title>
+<meta name="description" content="术后康复语音带练：膝关节（前交叉韧带重建）、踝关节（外踝韧带止点重建）。每天自动排好练习，语音带着做。个人制作，免费，不用注册。">
+<meta name="theme-color" content="#ECF1EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1210" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="好康复">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+<script>window.HKF_WEB = '2.0';</script>
+</head>
+<body>
+<style>
+/* Layout: one phone-width column. A "now" card on top, the day's 7 rounds as a time rail, a fullscreen voice coach over everything. */
+:root{
+  --bg:#ECF1EE; --surface:#FFFFFF; --sunk:#E1E8E4; --ink:#13201A; --muted:#55675E; --line:#D0DBD5;
+  --accent:#0A7761; --accent-soft:#D3EBE3; --on-accent:#FFFFFF;
+  --now:#A8670D; --now-soft:#F6E7CC;
+  --ice:#2569B3; --ice-soft:#DAE7F6;
+  --danger:#B3322A; --danger-soft:#F7DEDA;
+  /* coach overlay: one deliberate dark look in both themes */
+  --p-bg:#0B2B23; --p-panel:#12382F; --p-soft:rgba(255,255,255,.07); --p-ink:#EFF6F2; --p-muted:#9DBFB3; --p-line:rgba(255,255,255,.16);
+  --p-amber:#F2B23E; --p-on-amber:#1E1606; --p-go:#4AD3AA; --p-ice:#86BEF5;
+  --f-num:"Barlow Condensed","DIN Alternate","DIN Condensed","Roboto Condensed","sans-serif-condensed","Arial Narrow",sans-serif;
+  --f-ui:-apple-system,BlinkMacSystemFont,"PingFang SC","HarmonyOS Sans SC","MiSans","Noto Sans SC","Noto Sans CJK SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1210; --surface:#131D19; --sunk:#1B2723; --ink:#E2EBE6; --muted:#91A69C; --line:#25332E;
+  --accent:#3AC6A0; --accent-soft:#11362D; --on-accent:#03221A;
+  --now:#F0B03A; --now-soft:#38290F;
+  --ice:#6EAEF0; --ice-soft:#12283E;
+  --danger:#FF7E72; --danger-soft:#3A1814;
+  --p-bg:#06150F; --p-panel:#0D271F;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1210; --surface:#131D19; --sunk:#1B2723; --ink:#E2EBE6; --muted:#91A69C; --line:#25332E;
+  --accent:#3AC6A0; --accent-soft:#11362D; --on-accent:#03221A;
+  --now:#F0B03A; --now-soft:#38290F;
+  --ice:#6EAEF0; --ice-soft:#12283E;
+  --danger:#FF7E72; --danger-soft:#3A1814;
+  --p-bg:#06150F; --p-panel:#0D271F;
+  color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.55;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+body.noscroll{overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{cursor:default;opacity:.35}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 64px}
+
+/* header */
+.hdr{display:grid;gap:10px;padding-top:2px}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--muted);text-align:center}
+.dayline{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px}
+.navbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;font-size:22px;line-height:1;padding:0 0 3px}
+.daytitle{text-align:center;min-width:0}
+.daytitle h1{margin:0;font-size:20px;font-weight:700;line-height:1.1;display:flex;align-items:baseline;justify-content:center;gap:6px}
+.daytitle h1 .num{font-size:58px;font-weight:700;color:var(--accent);line-height:.85}
+.daytitle .sub{margin-top:8px;color:var(--muted);font-size:13.5px}
+.status{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:1px 10px;border-radius:999px;font-size:12.5px;line-height:1.75;background:var(--sunk);color:var(--ink);white-space:nowrap}
+.chip.ok{background:var(--accent-soft);color:var(--accent)}
+.chip.mid{background:var(--now-soft);color:var(--now)}
+.chip.bad{background:var(--danger-soft);color:var(--danger)}
+.chip.ice{background:var(--ice-soft);color:var(--ice)}
+.back-today{justify-self:center;border:0;background:var(--now-soft);color:var(--now);border-radius:999px;padding:4px 14px;font-size:13px;font-weight:650}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding-block:12px 10px;background:var(--bg)}
+.tabs button{border:0;background:transparent;border-radius:10px;padding:8px 0;font-size:15px;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:650;box-shadow:inset 0 0 0 1px var(--line)}
+main{display:grid;gap:24px}
+
+/* now card */
+.nowcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px}
+.nowcard .k{font-size:13px;font-weight:650;color:var(--now);letter-spacing:.04em}
+.nowcard h2{margin:0;font-size:22px;line-height:1.2;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;text-wrap:balance}
+.nowcard h2 .num{font-size:30px;font-weight:600;color:var(--muted)}
+.nowcard.all{text-align:center;justify-items:center}
+.nowcard.all .ring0{width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.nowcard.all .ring0 svg{width:28px;height:28px}
+.nowcard .hint .link{margin-left:6px;padding:0}
+.itemlist{list-style:none;margin:0;padding:0;display:grid}
+.itemlist li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px dashed var(--line)}
+.itemlist li:first-child{border-top:0}
+.itemlist li>span:first-child{min-width:0}
+.itemlist .dose{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.big{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;border:0;border-radius:14px;background:var(--accent);color:var(--on-accent);font-size:17px;font-weight:700}
+
+/* sections */
+.sec{display:grid;gap:10px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sec-h h3{margin:0;font-size:16px}
+.sec-h .muted{font-size:12.5px}
+.hint{margin:0;font-size:12.5px;color:var(--muted)}
+.viewing{margin:0;padding:10px 14px;border-radius:12px;background:var(--now-soft);color:var(--ink);font-size:14px}
+
+/* the day's rounds: a rail of dots */
+.segs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
+.segs i{height:6px;border-radius:3px;background:var(--sunk)}
+.segs i.done{background:var(--accent)}
+.segs i.part{background:var(--accent-soft)}
+.segs i.late{background:var(--danger-soft)}
+.rail{list-style:none;margin:0;padding:0}
+.rr{display:grid;grid-template-columns:50px 40px 1fr;column-gap:6px;align-items:start;position:relative}
+.rr:not(:last-child)::before{content:"";position:absolute;left:75px;top:42px;bottom:-4px;width:2px;background:var(--line)}
+.rr .rt{font-size:21px;font-weight:600;padding-top:8px;color:var(--muted)}
+.rr.due .rt{color:var(--now)}
+.dot{position:relative;z-index:1;width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:var(--surface);display:grid;place-items:center;color:transparent;padding:0;flex:none}
+.dot svg{width:18px;height:18px}
+.rr .dot{justify-self:center;margin-top:6px}
+.dot.on,.rr.done .dot{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.rr.part .dot{border-color:var(--accent);background:linear-gradient(to top,var(--accent-soft) 50%,var(--surface) 50%)}
+.rr.due .dot{border-color:var(--now);box-shadow:0 0 0 4px var(--now-soft)}
+.rr.late .dot{border-color:var(--danger)}
+.rr .rb{border:0;background:transparent;text-align:left;padding:8px 0 18px;display:grid;gap:3px;min-width:0}
+.rh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:650}
+.rm{font-weight:400;font-size:12.5px;color:var(--muted)}
+.rs{font-size:13px;color:var(--muted);line-height:1.65}
+.rs i{font-style:normal;margin:0 5px;opacity:.5}
+.rs span{white-space:nowrap}
+.rr.done .rh{color:var(--muted)}
+
+/* daily sessions */
+.dcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:10px}
+.dcard .dh{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.dcard h4{margin:0;font-size:16px}
+.dcard .dm{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:4px;font-size:12.5px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 16px;font-weight:600;min-height:44px}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.link{border:0;background:none;padding:6px 0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.icebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--ice-soft);border-radius:14px;padding:10px 12px}
+.icebar .icen{font-size:30px;font-weight:700;color:var(--ice);line-height:1}
+.icebar .btn{margin-left:auto;border-color:transparent;color:var(--ice)}
+
+/* totals */
+.tot{display:grid;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.tot .row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:baseline}
+.tot .bar{grid-column:1/-1;height:5px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.tot .bar b{display:block;height:100%;background:var(--accent);border-radius:3px}
+.tot .v{font-family:var(--f-num);font-size:20px;font-weight:600}
+.tot .v small{font-family:var(--f-ui);font-size:12px;color:var(--muted);font-weight:400;margin-left:3px}
+
+/* pain scale (NRS 0–10) */
+.nrs{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:3px}
+.nrs button{height:42px;border:1px solid var(--line);background:var(--surface);border-radius:8px;font-family:var(--f-num);font-size:18px;font-weight:600;padding:0}
+.nrs button.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.nrs button.md.on{background:var(--now);border-color:var(--now);color:var(--surface)}
+.nrs button.hi.on{background:var(--danger);border-color:var(--danger);color:var(--surface)}
+.next{display:grid;gap:4px;padding:14px 16px;border-radius:16px;background:var(--accent-soft)}
+.next .k{font-size:12.5px;color:var(--accent);font-weight:650}
+.next b{font-size:16px}
+.next span:last-child{font-size:13.5px}
+.foot{text-align:center;padding-inline:8px}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:58px 14px 1fr;column-gap:10px;position:relative;padding-bottom:20px}
+.tl li:not(:last-child)::before{content:"";position:absolute;left:74px;top:20px;bottom:0;width:2px;background:var(--line)}
+.tl .d{text-align:right;font-family:var(--f-num);font-size:19px;font-weight:600;line-height:1.2}
+.tl .d small{display:block;font-family:var(--f-ui);font-size:11.5px;font-weight:400;color:var(--muted)}
+.tl .o{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);background:var(--bg);margin-top:5px;position:relative;z-index:1}
+.tl li.past .o{background:var(--accent);border-color:var(--accent)}
+.tl li.cur .o{border-color:var(--now);background:var(--now);box-shadow:0 0 0 4px var(--now-soft)}
+.tl .c{display:grid;gap:4px;min-width:0}
+.tl .c b{font-size:15.5px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tl .c p{margin:0;font-size:13.5px;color:var(--muted)}
+.tl li.minor .c b{font-size:14px;font-weight:600}
+.tl li.past .c{opacity:.65}
+.hist{list-style:none;margin:0;padding:0;display:grid}
+.hist li{display:grid;grid-template-columns:44px 52px minmax(0,1fr) 40px 44px;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:13.5px}
+.hist .hd{font-size:16px;font-weight:600}
+.hist .hp,.hist .hpn{color:var(--muted);font-size:12.5px}
+.hist .hb{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.hist .hb b{display:block;height:100%;background:var(--accent)}
+.hist .hv{text-align:right;font-size:16px}
+.hist .hpn{text-align:right}
+
+/* notes */
+.alert{background:var(--danger-soft);border-radius:16px;padding:14px 16px;display:grid;gap:8px}
+.alert h3{margin:0;color:var(--danger);font-size:16px}
+.alert ol,.card ol,.card ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:8px}
+.card h3{margin:0;font-size:16px}
+.card p{margin:0}
+.card .btn{justify-self:start}
+.ptable{width:100%;border-collapse:collapse;font-size:13.5px}
+.ptable td{padding:7px 0;border-top:1px solid var(--line);vertical-align:top}
+.ptable tr:first-child td{border-top:0}
+.ptable td:first-child{width:9.6em;padding-right:10px}
+.atable th{font-size:12.5px;font-weight:600;color:var(--muted);text-align:left;padding:0 0 6px}
+.atable td{padding-right:8px}
+.atable td:first-child{width:5.4em}
+.atable tr:first-child td{border-top:1px solid var(--line)}
+
+/* settings */
+.srow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.srow .sl{font-weight:600}
+.srow .sr{grid-column:1;font-size:12px;color:var(--muted)}
+.srow>:last-child:not(.sl):not(.sr){grid-row:1/span 2;grid-column:2}
+.grp{font-size:12.5px;color:var(--accent);font-weight:650;letter-spacing:.06em;margin-top:10px}
+.earlyq{display:grid;gap:10px;margin:2px 0 10px;padding:12px 14px;border-radius:14px;background:var(--now-soft)}
+.earlyq p{margin:0;font-weight:600}
+.earlyq-b{display:flex;flex-wrap:wrap;gap:8px}
+.times{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}
+.field{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.field input{font-family:var(--f-num);font-size:18px;padding:5px 8px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-width:0;max-width:100%}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:20px;line-height:1;padding:0 0 2px}
+.stepper b{min-width:2.4ch;text-align:center;font-size:21px;font-weight:600}
+.stepper .su{font-size:12.5px;color:var(--muted);min-width:2em}
+.srow input{font-family:var(--f-num);font-size:18px;padding:5px 8px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-width:0}
+.kv{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.kv>span{color:var(--muted);flex:none}
+.kv>b{font-weight:600;text-align:right;min-width:0;overflow-wrap:anywhere}
+/* first launch inside the app */
+body.setup .hdr,body.setup .tabs{display:none}
+.setup-card{display:grid;gap:16px;padding-top:6vh}
+.setup-card h1{margin:0;font-size:30px;line-height:1.2;text-wrap:balance}
+.setup-card .lead{margin:0;color:var(--muted);font-size:15px}
+.setup-card .q{display:grid;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.setup-card .q label{font-weight:650;font-size:17px}
+.setup-card .q .srow{border-top:0;padding:0}
+.setup-card .ql{font-weight:650;font-size:17px}
+.kinds{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kind{display:grid;gap:4px;text-align:left;padding:14px 14px 13px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;cursor:pointer}
+.kind b{font-size:18px}
+.kind span{font-size:13px;color:var(--muted)}
+.kind[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent) inset}
+.setup-card .q input{font-family:var(--f-num);font-size:24px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);max-width:100%}
+/* web version: how to open it, the alarm times, the Android app link */
+.webtip{padding:12px 14px;border-radius:14px;background:var(--now-soft);color:var(--ink);font-size:14px;line-height:1.6}
+.webtip>b{display:block;font-size:15.5px}
+.webtip p{margin:4px 0 0}
+.webtip .muted{font-size:13px}
+.webtip a{color:var(--accent);font-weight:650}
+.webtip .pw{letter-spacing:.5px}
+.sec .webtip{margin-top:6px}
+.alarms{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.alarms .chip{font-size:13.5px;padding:2px 10px}
+.alarms .chip .num{font-size:16px;font-weight:600}
+a.btn{display:inline-flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;white-space:nowrap}
+.appbar{display:flex;align-items:center;gap:10px;padding:10px 8px 10px 14px;border-radius:14px;background:var(--accent-soft);color:var(--ink);font-size:13px;line-height:1.5}
+.appbar>div{flex:1;min-width:0}
+.appbar b{display:block;font-size:14.5px}
+.appbar span{color:var(--muted)}
+.appbar .btn{min-height:38px;padding:7px 16px}
+.appbar .x{border:0;background:none;color:var(--muted);font-size:22px;line-height:1;padding:6px 6px;cursor:pointer}
+.setup-card .fine{text-align:center;margin-top:-4px}
+.sw{position:relative;width:50px;height:30px;border-radius:999px;border:0;background:var(--sunk);padding:0;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .15s}
+.sw[aria-checked="true"]{background:var(--accent)}
+.sw[aria-checked="true"]::after{transform:translateX(20px)}
+
+/* coach overlay */
+.player{position:fixed;inset:0;z-index:50;background:var(--p-bg);color:var(--p-ink);display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;
+  padding-top:calc(env(safe-area-inset-top,0px) + 10px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.player :focus-visible{outline-color:var(--p-amber)}
+.p-top{display:flex;align-items:center;gap:8px;max-width:560px;width:100%;margin:0 auto}
+.p-sess{flex:1;min-width:0;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.p-sess b{font-size:15px;font-weight:650}
+.p-sess b .num{font-size:18px;color:var(--p-muted);font-weight:500}
+.p-step{font-size:14px;color:var(--p-muted)}
+.p-pill{border:1px solid var(--p-line);background:transparent;color:var(--p-ink);border-radius:999px;padding:6px 12px;font-size:13px;min-height:36px}
+.p-pill[aria-pressed="false"]{color:var(--p-muted)}
+.p-x{width:40px;height:40px;border-radius:50%;border:1px solid var(--p-line);background:transparent;color:var(--p-ink);font-size:22px;line-height:1;padding:0 0 3px}
+.p-body{flex:1;display:flex;flex-direction:column;max-width:560px;width:100%;margin:0 auto;padding-top:18px}
+.p-ov,.p-ready,.p-run,.p-done{display:flex;flex-direction:column;gap:14px;flex:1}
+.p-eyebrow{font-size:13px;color:var(--p-muted);letter-spacing:.04em}
+.p-title{font-size:28px;font-weight:750;line-height:1.2;margin:0;text-wrap:balance}
+.p-list{list-style:none;margin:0;padding:0;display:grid}
+.p-list li{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:6px 10px;align-items:baseline;padding:10px 0;border-top:1px solid var(--p-line)}
+.p-list li .n{font-size:18px;color:var(--p-muted)}
+.p-list li .ds{color:var(--p-muted);font-size:13.5px;white-space:nowrap}
+.p-list li.done .nm{text-decoration:line-through;color:var(--p-muted)}
+.p-list em{font-style:normal;font-size:12px;color:var(--p-amber);margin-left:6px}
+.p-list .p-mrow{grid-column:2/-1}
+.p-go{min-height:60px;border:0;border-radius:16px;background:var(--p-amber);color:var(--p-on-amber);font-size:19px;font-weight:750;width:100%}
+.p-go.ghost{background:transparent;border:1px solid var(--p-line);color:var(--p-ink)}
+.p-tip{font-size:12.5px;color:var(--p-muted);margin:0}
+.p-note{margin:0;font-size:14px;background:var(--p-soft);border-radius:12px;padding:10px 12px}
+.p-name{font-size:30px;font-weight:750;line-height:1.15;margin:0;text-wrap:balance}
+.p-chips{display:flex;gap:6px;flex-wrap:wrap}
+.pc{font-size:12.5px;border-radius:999px;padding:2px 10px;background:var(--p-soft);color:var(--p-ink)}
+.pc.ok{color:var(--p-go)}
+.pc.mid{color:var(--p-amber)}
+.p-how{margin:0;font-size:16px;line-height:1.6}
+.p-meths{display:flex;gap:6px;flex-wrap:wrap}
+.p-meths button{border:1px solid var(--p-line);background:transparent;color:var(--p-ink);border-radius:999px;padding:6px 12px;font-size:13.5px}
+.p-meths button[aria-pressed="true"]{background:var(--p-ink);color:var(--p-bg);border-color:var(--p-ink);font-weight:650}
+.p-copy{align-self:flex-start;border:0;background:none;color:var(--p-go);padding:4px 0;font-size:14px;text-align:left;text-decoration:underline;text-underline-offset:3px}
+.p-run .p-copy{align-self:center}
+.p-skip{align-self:center;border:0;background:none;color:var(--p-muted);font-size:14px;padding:8px 16px}
+.p-spacer{flex:1}
+.p-run{align-items:center;text-align:center;justify-content:center;padding-bottom:4vh}
+.p-run .p-name{font-size:22px}
+.ring-wrap{position:relative;width:min(74vw,300px);aspect-ratio:1;max-width:100%}
+.ring{width:100%;height:100%;transform:rotate(-90deg);display:block}
+.ring circle{fill:none;stroke-width:10}
+.ring .trk{stroke:var(--p-line)}
+.ring .arc{stroke:var(--p-go);stroke-linecap:round;transition:stroke-dashoffset .25s linear,stroke .3s}
+.ring.k-hold .arc{stroke:var(--p-amber)}
+.ring.k-rest .arc{stroke:var(--p-muted)}
+.ring.k-ice .arc{stroke:var(--p-ice)}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:16%}
+.p-big{font-family:var(--f-num);font-weight:600;font-size:min(25vw,104px);line-height:1;font-variant-numeric:tabular-nums}
+.p-big.word{font-family:var(--f-ui);font-size:min(12vw,48px);font-weight:750;line-height:1.15}
+.p-big.hold{color:var(--p-amber)}
+.p-sub{font-size:17px;color:var(--p-muted);min-height:1.5em}
+.p-meta{font-size:16px}
+.p-paused{font-size:14px;color:var(--p-amber)}
+.p-ctl{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;flex-wrap:wrap}
+.p-pause{min-width:140px;min-height:56px;border-radius:999px;border:0;background:var(--p-ink);color:var(--p-bg);font-size:17px;font-weight:750;padding:0 22px}
+.p-nextbtn{min-height:56px;border-radius:999px;border:1px solid var(--p-line);background:transparent;color:var(--p-ink);padding:0 20px;font-size:15px}
+.p-upnext{font-size:13.5px;color:var(--p-muted)}
+.p-done{align-items:center;text-align:center}
+.p-check{width:84px;height:84px;border-radius:50%;background:var(--p-go);color:var(--p-bg);display:grid;place-items:center;margin-top:12px}
+.p-check svg{width:42px;height:42px}
+.p-done .p-list{width:100%;text-align:left}
+.p-confirm{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--p-panel);color:var(--p-ink);border-top:1px solid var(--p-line);display:grid;gap:12px;
+  padding-top:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.p-confirm p{margin:0 auto;max-width:560px;width:100%;font-size:15px}
+.p-confirm .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;margin:0 auto;width:100%}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:80;width:max-content;max-width:min(92vw,480px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.toast .sel{-webkit-user-select:all;user-select:all;font-weight:700}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="hdr" id="hdr"></header>
+  <nav class="tabs" id="tabs" role="tablist" aria-label="页面">
+    <button role="tab" data-act="tab" data-tab="today">今天</button>
+    <button role="tab" data-act="tab" data-tab="plan">全程</button>
+    <button role="tab" data-act="tab" data-tab="notes">须知</button>
+    <button role="tab" data-act="tab" data-tab="settings">设置</button>
+  </nav>
+  <main id="main"><p class="hint">正在整理今天的安排…</p></main>
+</div>
+
+<div class="player" id="player" hidden role="dialog" aria-modal="true" aria-label="跟练">
+  <div class="p-top">
+    <div class="p-sess"><b id="pSess"></b><span class="p-step num" id="pStep"></span></div>
+    <button class="p-pill" id="pVoiceBtn" data-act="voice" aria-pressed="true">语音</button>
+    <button class="p-x" data-act="p-close" aria-label="关闭跟练">×</button>
+  </div>
+  <div class="p-body" id="pBody"></div>
+</div>
+<div class="p-confirm" id="pConfirm" hidden></div>
+<div class="toast" id="toast" hidden role="status"></div>
+<audio id="aud" preload="auto" playsinline></audio>
+
+<script>
+(function () {
+'use strict';
+
+/* ---------- helpers ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+const clone = o => JSON.parse(JSON.stringify(o));
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const WD = '日一二三四五六';
+const ymd = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const today = () => ymd(new Date());
+const parts = s => s.split('-').map(Number);
+const dayNum = s => { const [y, m, d] = parts(s); return Math.round(Date.UTC(y, m - 1, d) / 864e5); };
+const addDays = (s, n) => { const [y, m, d] = parts(s); const t = new Date(Date.UTC(y, m - 1, d + n)); return t.getUTCFullYear() + '-' + pad(t.getUTCMonth() + 1) + '-' + pad(t.getUTCDate()); };
+const wd = s => { const [y, m, d] = parts(s); return '周' + WD[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]; };
+const md = s => { const [, m, d] = parts(s); return m + '月' + d + '日'; };
+const smd = s => { const [, m, d] = parts(s); return m + '/' + d; };
+const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
+const nowMin = () => { const d = new Date(); return d.getHours() * 60 + d.getMinutes(); };
+const hm = ts => { const d = new Date(ts); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+const mmss = s => { s = Math.max(0, Math.ceil(s - 0.001)); return Math.floor(s / 60) + ':' + pad(s % 60); };
+const span = m => m >= 60 ? Math.floor(m / 60) + '小时' + (m % 60 ? (m % 60) + '分' : '') : m + '分钟';
+const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+/* inside the Android app the page gets a native bridge: background player, reminders, file storage */
+const NB = window.AndroidBridge || null;
+const APP = !!NB;
+/* the public web version (its own address, can be added to the home screen): the web build sets HKF_WEB to its version */
+const WEB = !APP && !!window.HKF_WEB;
+const UA = navigator.userAgent || '';
+const IOS = /iPhone|iPad|iPod/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+const INAPP = /MicroMessenger|wxwork|xhsdiscover|XiaoHongShu|aweme|BytedanceWebview|Weibo| QQ\/|DingTalk|AlipayClient|baiduboxapp/i.test(UA);
+const STANDALONE = () => { try { return navigator.standalone === true || matchMedia('(display-mode: standalone)').matches; } catch (e) { return false; } };
+const APK_PAGE = 'app.html';   /* the web version's download page for the Android app; the APK sits next to it */
+const nb = (fn, ...a) => { try { return NB && typeof NB[fn] === 'function' ? NB[fn](...a) : undefined; } catch (e) { return undefined; } };
+const nbJSON = fn => { try { return JSON.parse(nb(fn) || '{}'); } catch (e) { return {}; } };
+/* shown under 设置 → 关于 */
+const AUTHOR = '20261013机场院区31号床';
+
+/* ---------- the plans, as printed, plus how each move is done ---------- */
+const PAIN = {none: ['无痛为宜', 'ok'], mild: ['轻微或完全无痛', 'ok'], light: ['轻度疼痛或无痛为宜', 'ok'], zero: ['必须完全无痛', 'ok'],
+  lmod: ['轻至中度疼痛，冰敷后消失为宜', 'mid'], mod: ['中度疼痛、能忍受为宜', 'mid'], tol: ['疼痛能忍受', 'mid']};
+const JOINT = () => S.st.kind === 'knee' ? '膝关节' : '踝关节';
+const EX = {
+  toe:   {name: '脚趾活动', short: '脚趾', video: '脚趾活动', pain: 'none', why: '预防血栓', how: '脚趾用力往下勾、再往上伸，一直做，到时间会提醒你。'},
+  knee:  {name: '膝关节主动活动', short: '膝关节', video: '膝关节主动活动', pain: 'none', why: '预防血栓、防止膝关节僵硬', how: '躺着慢慢弯曲、再伸直膝关节，一直做，到时间会提醒你。'},
+  ankp:  {name: '踝泵练习', short: '踝泵', video: '踝泵练习', pain: 'none', why: '预防血栓', how: '脚踝用力往上勾、再往下踩，一直做，到时间会提醒你。'},
+  thigh: {name: '大腿绷劲', short: '绷劲', video: '大腿绷劲', pain: 'none', why: '预防血栓、改善肌肉功能', how: '腿伸直。听到「用力绷紧」就绷紧大腿前面的肌肉，听到「放松」就放松。'},
+  slr:   {name: '直抬腿', short: '直抬腿', video: '踝术后直抬腿', videoK: '术后早期直抬腿', pain: 'mild', why: '改善肌肉功能', how: '平躺，膝盖伸直、大腿绷紧，抬起整条腿，保持住，再慢慢放下。'},
+  back:  {name: '后向直抬腿', short: '后抬', video: '后向直抬腿', pain: 'zero', why: '改善肌肉功能', how: '趴着，腿伸直往后上方抬起，保持住，再慢慢放下。'},
+  out:   {name: '外向直抬腿', short: '外抬', video: '外向直抬腿', pain: 'zero', why: '改善肌肉功能', how: '侧躺，手术的腿在上，伸直往上抬起，保持住，再慢慢放下。'},
+  inn:   {name: '内侧抬腿', short: '内抬', video: '内侧抬腿', pain: 'zero', why: '改善肌肉功能', how: '侧躺，手术的腿在下，伸直往上抬起，保持住，再慢慢放下。'},
+  pat:   {name: '推髌骨', short: '推髌骨', video: '推髌骨', pain: 'light', why: '改善关节活动范围', how: '腿伸直放松，用手把髌骨（膝盖骨）往上、下、左、右慢慢推，到时间会提醒你。'},
+  ext:   {name: '被动伸膝', short: '伸膝', video: '被动伸膝', pain: 'lmod', why: '改善关节活动范围',
+          how: '让膝关节伸直到最大，做法看公众号视频。术前伸膝困难的，在膝关节上方的大腿上（靠近膝盖）加2–3公斤重物，或请家人帮忙压直；不要把重物直接压在膝盖上。'},
+  flex:  {name: '被动屈膝', short: '屈膝', pain: 'mod', why: '改善关节活动范围', how: '弯到能忍受的最大角度。脚尖始终朝前，膝盖和脚尖成一条直线，别往里扣。',
+          methods: [{n: '坐位垂腿', v: '坐位垂腿'}, {n: '顶墙', v: '顶墙'}, {n: '坐位抱腿', v: '坐位抱腿'}, {n: '仰卧垂腿', v: '仰卧垂腿'}]},
+  df:    {name: '被动背伸', short: '背伸', pain: 'mod', why: '改善关节活动范围', how: '把脚往勾脚方向（脚背靠向小腿）压到最大角度。',
+          methods: [{n: '家属帮助', v: '踝关节被动背伸最大角度练习（家属帮助）'}, {n: '自我练习', v: '踝关节被动背伸最大角度练习（自我练习）'}, {n: '屈膝位', v: '踝关节被动屈膝位背伸练习'}],
+          adv: [{n: '下蹲（进阶）', v: '踝关节被动背伸最大角度进阶练习（下蹲）'}, {n: '蹲斜板（进阶）', v: '蹲斜板背伸练习'}, {n: '弓箭步（进阶）', v: '弓箭步踝背伸练习'}]},
+  pf:    {name: '被动跖屈', short: '跖屈', pain: 'mod', why: '改善关节活动范围', how: '把脚往绷脚方向（脚尖向下）压到最大角度。',
+          methods: [{n: '家属帮助', v: '踝关节被动跖屈最大角度练习（家属帮助）'}, {n: '自我练习', v: '踝关节被动跖屈最大角度练习（自我练习）'}],
+          adv: [{n: '跪坐（进阶）', v: '踝关节被动跖屈最大角度进阶练习（跪坐）'}]},
+  inv:   {name: '被动内翻', short: '内翻', video: '踝关节被动内翻最大角度练习', pain: 'tol', why: '改善踝关节角度', how: '把脚掌往内侧翻到最大角度。'},
+  ev:    {name: '被动外翻', short: '外翻', video: '踝关节被动外翻最大角度练习', pain: 'tol', why: '改善踝关节角度', how: '把脚掌往外侧翻到最大角度。'},
+  ice:   {name: '冰敷', short: '冰敷', video: '冰敷', pain: null, why: '控制疼痛和炎症', get how() { return '用冰水混合物，敷在' + JOINT() + '周围。'; }},
+  rdf:   {name: '抗阻背伸', short: '抗阻', video: '踝关节抗阻背伸', pain: 'zero', why: '改善肌肉功能', how: '弹力带拉住脚背，往勾脚方向用力到底，停住，再慢慢放下。'},
+  rpf:   {name: '抗阻跖屈', short: '抗阻', video: '踝关节抗阻跖屈', pain: 'zero', why: '改善肌肉功能', how: '弹力带套住脚掌，往下踩到底，停住，再慢慢放下。'},
+  rinv:  {name: '抗阻内翻', short: '抗阻', video: '踝关节抗阻内翻', pain: 'zero', why: '改善肌肉功能', how: '弹力带拉住，脚掌往内翻到底，停住，再慢慢放下。'},
+  rev:   {name: '抗阻外翻', short: '抗阻', video: '踝关节抗阻外翻', pain: 'zero', why: '改善肌肉功能', how: '弹力带拉住，脚掌往外翻到底，停住，再慢慢放下。'},
+  sls:   {name: '单腿站立', short: '单腿站', video: '单腿站立', pain: 'zero', why: '改善肌肉功能', how: '手术的腿单腿站稳。身边留一个能扶的地方。'},
+  wall:  {name: '靠墙静蹲', short: '静蹲', video: '靠墙静蹲', pain: 'zero', why: '改善肌肉功能', how: '背靠墙，屈膝蹲到不痛的角度，保持住。'},
+  squat: {name: '双腿下蹲', short: '下蹲', video: '双腿下蹲', pain: 'zero', why: '改善肌肉功能', how: '双脚分开站稳，慢慢蹲到不痛的角度，再站起来。'},
+  calf:  {name: '提踵练习', short: '提踵', video: '提踵练习', pain: 'zero', why: '改善肌肉功能', how: '踮起脚跟，停几秒，再慢慢落下。'},
+  flunge:{name: '前向弓步', short: '前弓步', video: '前向弓步', pain: 'zero', why: '改善肌肉功能', how: '向前迈一步屈膝下蹲，再收回。'},
+  blunge:{name: '后向弓步', short: '后弓步', video: '后向弓步', pain: 'zero', why: '改善肌肉功能', how: '向后撤一步屈膝下蹲，再收回。'}
+};
+const MULTI = ['back', 'out', 'inn'], RES4 = ['rdf', 'rpf', 'rinv', 'rev'], B9 = ['calf', 'flunge', 'blunge'], B9K = ['squat', 'flunge', 'blunge'];
+
+/* each plan keeps its own amounts, and every amount can only move inside the range that plan gives */
+const DOSES = {
+  ankle: {
+    toeMin:  {def: 8,  min: 5,  max: 10, u: '分钟', l: '脚趾活动 每次', r: '计划：5–10分钟/小时，每天6–8小时'},
+    kneeMin: {def: 3,  min: 1,  max: 10, u: '分钟', l: '膝关节活动 每轮', r: '计划写「每天适量」；每轮3分钟是默认值，可以调'},
+    thighMin:{def: 15, min: 15, max: 20, u: '分钟', l: '大腿绷劲 每次', r: '计划：15–20分钟/小时'},
+    thighHrs:{def: 3,  min: 3,  max: 4,  u: '轮',   l: '大腿绷劲 每天', r: '计划：每天3–4小时'},
+    slrHold: {def: 10, min: 5,  max: 10, u: '秒',   l: '直抬腿 每次保持', r: '计划：5–10秒/次，10次/组；默认保持10秒'},
+    slrSets: {def: 3,  min: 2,  max: 5,  u: '组',   l: '直抬腿 每天', r: '计划：2–3组/天，不加重肿痛可加到4–5组'},
+    mHold:   {def: 10, min: 5,  max: 10, u: '秒',   l: '各方向抬腿 每次保持', r: '计划：5–10秒/次；默认保持10秒'},
+    mReps:   {def: 10, min: 10, max: 20, u: '次',   l: '各方向抬腿 每组', r: '计划：10–20次/组'},
+    mSets:   {def: 3,  min: 2,  max: 3,  u: '组',   l: '各方向抬腿 每天', r: '计划：2–3组/天'},
+    romMin:  {def: 5,  min: 5,  max: 10, u: '分钟', l: '被动背伸、跖屈 每次', r: '计划：5–10分钟/次，每天1次'},
+    ivSess:  {def: 1,  min: 1,  max: 2,  u: '次',   l: '被动内翻、外翻 每天', r: '计划：10分钟/次，每天1–2次'},
+    strReps: {def: 10, min: 8,  max: 12, u: '次',   l: '抗阻练习 每组', r: '计划：10个左右/组'},
+    strHold: {def: 5,  min: 5,  max: 10, u: '秒',   l: '抗阻练习 每次停留', r: '停留5–10秒再慢慢放下（作者补充的做法）'},
+    strSets: {def: 1,  min: 1,  max: 2,  u: '组',   l: '抗阻练习 每天', r: '计划：每天1–2组'},
+    slsN:    {def: 2,  min: 2,  max: 3,  u: '个',   l: '单腿站立 每组', r: '计划：睁眼30秒、闭眼15秒，2–3个/组，每天2组'},
+    wallSec: {def: 30, min: 30, max: 120, step: 10, u: '秒', l: '靠墙静蹲 每个', r: '计划：30–120秒/个'},
+    wallN:   {def: 2,  min: 2,  max: 3,  u: '个',   l: '靠墙静蹲 每天', r: '计划：每天或隔天2–3个'},
+    b9Reps:  {def: 10, min: 10, max: 20, u: '次',   l: '提踵、弓步 每组', r: '计划：10–20个/组'},
+    calfHold:{def: 3,  min: 2,  max: 5,  u: '秒',   l: '提踵 每次停留', r: '维持几秒再慢慢落下（作者补充的做法）'},
+    b9Sets:  {def: 2,  min: 2,  max: 3,  u: '组',   l: '提踵、弓步 每天', r: '计划：每天或隔天2–3组'}
+  },
+  knee: {
+    ankpMin: {def: 15, min: 15, max: 20, u: '分钟', l: '踝泵练习 每次', r: '计划：15–20分钟/小时，每天6–8小时'},
+    thighMin:{def: 5,  min: 5,  max: 10, u: '分钟', l: '大腿绷劲 每次', r: '计划：5–10分钟/小时'},
+    thighHrs:{def: 3,  min: 3,  max: 4,  u: '轮',   l: '大腿绷劲 每天', r: '计划：每天3–4小时'},
+    slrHold: {def: 10, min: 5,  max: 10, u: '秒',   l: '直抬腿 每次保持', r: '计划：5–10秒/次，10次/组；默认保持10秒'},
+    slrSets: {def: 3,  min: 2,  max: 5,  u: '组',   l: '直抬腿 每天', r: '计划：2–3组/天，不加重肿痛可加到4–5组'},
+    extMin:  {def: 10, min: 10, max: 20, u: '分钟', l: '被动伸膝 每次', r: '计划：10–20分钟/次'},
+    extSess: {def: 1,  min: 1,  max: 2,  u: '次',   l: '被动伸膝 每天', r: '计划：每天1–2次'},
+    patMin:  {def: 2,  min: 2,  max: 3,  u: '分钟', l: '推髌骨 每次', r: '计划：2–3分钟/次'},
+    patN:    {def: 5,  min: 5,  max: 6,  u: '次',   l: '推髌骨 每天', r: '计划：每天5–6次，分在5–6轮里'},
+    flexMin: {def: 15, min: 15, max: 20, u: '分钟', l: '被动屈膝 每次', r: '计划：15–20分钟/次，每天1次'},
+    mHold:   {def: 10, min: 5,  max: 10, u: '秒',   l: '各方向抬腿 每次保持', r: '计划：5–10秒/次；默认保持10秒'},
+    mReps:   {def: 10, min: 10, max: 20, u: '次',   l: '各方向抬腿 每组', r: '计划：10–20次/组'},
+    mSets:   {def: 3,  min: 2,  max: 3,  u: '组',   l: '各方向抬腿 每天', r: '计划：2–3组/天'},
+    slsN:    {def: 2,  min: 2,  max: 3,  u: '个',   l: '单腿站立 每组', r: '计划：睁眼30秒、闭眼15秒，2–3个/组，每天2组'},
+    wallSec: {def: 30, min: 30, max: 120, step: 10, u: '秒', l: '靠墙静蹲 每个', r: '计划：30–120秒/个'},
+    wallN:   {def: 2,  min: 2,  max: 3,  u: '个',   l: '靠墙静蹲 每天', r: '计划：每天或隔天2–3个'},
+    b9Reps:  {def: 10, min: 10, max: 20, u: '次',   l: '双腿下蹲、弓步 每组', r: '计划：10–20个/组'},
+    b9Sets:  {def: 2,  min: 2,  max: 3,  u: '组',   l: '双腿下蹲、弓步 每天', r: '计划：每天或隔天2–3组'}
+  }
+};
+const DOSE_GROUPS = {
+  ankle: [
+    ['每轮里的动作', ['toeMin', 'kneeMin', 'thighMin', 'thighHrs', 'slrHold', 'slrSets', 'mHold', 'mReps', 'mSets']],
+    ['第3周起', ['romMin']],
+    ['第5周起', ['ivSess']],
+    ['第7周起', ['strReps', 'strHold', 'strSets']],
+    ['第9周起', ['slsN', 'wallSec', 'wallN', 'b9Reps', 'calfHold', 'b9Sets']]
+  ],
+  knee: [
+    ['每轮里的动作', ['ankpMin', 'thighMin', 'thighHrs', 'slrHold', 'slrSets', 'patMin', 'patN', 'mHold', 'mReps', 'mSets']],
+    ['第1天起', ['extMin', 'extSess']],
+    ['第4天起', ['flexMin']],
+    ['第3周起', ['slsN']],
+    ['第5周起', ['wallSec', 'wallN', 'b9Reps', 'b9Sets']]
+  ]
+};
+const curDoses = () => DOSES[S.st.kind];
+/* seconds between an item's spoken intro and its first move; position changes get longer */
+const PREP = {toe: 6, knee: 6, ankp: 6, thigh: 6, slr: 7, back: 15, out: 15, inn: 15, pat: 8, ext: 8, flex: 10, df: 8, pf: 8, inv: 8, ev: 8, ice: 6,
+  rdf: 10, rpf: 10, rinv: 10, rev: 10, sls: 10, wall: 10, squat: 8, calf: 8, flunge: 8, blunge: 8};
+const POS = {slr: 'supine', back: 'prone', out: 'sideUp', inn: 'sideDown', rdf: 'band', rpf: 'band', rinv: 'band', rev: 'band', sls: 'stand', calf: 'stand', squat: 'stand', flunge: 'stand', blunge: 'stand', wall: 'wallReady'};
+const POS_TEXT = {supine: '平躺', prone: '趴下', sideUp: '侧躺，手术的腿在上', sideDown: '侧躺，手术的腿在下', band: '套好弹力带', stand: '站好', wallReady: '背靠墙站好'};
+/* items that need setting up first (ice) wait for a tap; everything else flows on */
+const MANUAL = {ice: true};
+const MAP = {thigh: {3: [0, 3, 6], 4: [0, 2, 4, 6]}, slr: {2: [0, 6], 3: [0, 3, 6], 4: [0, 2, 4, 6], 5: [0, 2, 3, 4, 6]}, multi: {2: [0, 6], 3: [0, 3, 6]},
+  pat: {5: [0, 2, 3, 4, 6], 6: [0, 1, 2, 4, 5, 6]}};
+const PLANS = {
+  ankle: {joint: '踝关节', op: '外踝韧带止点重建', first: 'toe',
+    flags: [
+      ['walking', '已经能正常走路了', '不再安排脚趾活动、膝关节活动、大腿绷劲（计划写的是做到能正常行走）'],
+      ['dfOK', '背伸角度和健侧一样了', '不再安排被动背伸'],
+      ['pfOK', '跖屈角度和健侧一样了', '不再安排被动跖屈'],
+      ['invOK', '内翻角度和健侧一样了', '不再安排被动内翻'],
+      ['evOK', '外翻角度和健侧一样了', '不再安排被动外翻'],
+      ['slsOK', '单腿站立和健侧一样稳了', '不再安排单腿站立']],
+    /* the plan's time gates. A later stage can be started early, one step at a time, once the doctor or therapist agrees;
+       that moves the exercises only: weight bearing and the brace keep to the dates */
+    stages: [
+      {pod: 15, name: '第3周', adds: '加被动背伸、被动跖屈，做完冰敷'},
+      {pod: 29, name: '第5周', adds: '加被动内翻、被动外翻'},
+      {pod: 43, name: '第7周', adds: '加抗阻背伸、跖屈、内翻、外翻，角度练习换成进阶做法；直抬腿、各方向抬腿不再做'},
+      {pod: 57, name: '第9周', adds: '加单腿站立、靠墙静蹲、提踵、前向弓步、后向弓步'}],
+    keyItems: {thigh: '大腿绷劲', slr: '直抬腿', back: '各方向抬腿'}},
+  knee: {joint: '膝关节', op: '前交叉韧带重建', first: 'ankp',
+    flags: [
+      ['walking', '已经能正常走路了', '不再安排踝泵练习、大腿绷劲（计划写的是做到能正常行走）'],
+      ['extOK', '伸膝和健侧一样了', '不再安排被动伸膝（一般2周左右）'],
+      ['flexOK', '屈膝和健侧一样了', '不再安排被动屈膝和推髌骨（一般8–12周）'],
+      ['slsOK', '单腿站立和健侧一样稳了', '不再安排单腿站立']],
+    stages: [
+      {pod: 4, name: '第4天', adds: '加推髌骨、被动屈膝（做完冰敷）、各方向抬腿'},
+      {pod: 15, name: '第3周', adds: '加单腿站立'},
+      {pod: 29, name: '第5周', adds: '加靠墙静蹲、双腿下蹲、前向弓步、后向弓步'}],
+    keyItems: {thigh: '大腿绷劲', slr: '直抬腿', back: '各方向抬腿', pat: '推髌骨'}}
+};
+const PL = () => PLANS[S.st.kind];
+const STAGES = () => PL().stages;
+
+/* recorded voice prompts: frame index of each clip inside voice.mp3 (24 kHz mono MP3, 96-byte frames, 24 ms each) */
+const VOICE = {"i":{"start":[0,24],"timeup":[24,36],"hold":[60,24],"tight":[84,45],"relax":[129,29],"lift":[158,28],"lower":[186,47],"drop":[233,45],"rise":[278,49],"dorsi":[327,28],"plantar":[355,35],"invert":[390,33],"evert":[423,38],"lungeF":[461,43],"lungeB":[504,44],"up":[548,43],"rest":[591,25],"c1":[616,13],"c2":[629,14],"c3":[643,15],"ten":[658,42],"left10":[700,52],"left5":[752,55],"left3":[807,49],"left1":[856,51],"next":[907,37],"done":[944,84],"iceDone":[1028,113],"tapStart":[1141,69],"supine":[1210,46],"prone":[1256,41],"sideUp":[1297,103],"sideDown":[1400,90],"band":[1490,50],"stand":[1540,44],"wallReady":[1584,53],"eyesOpen":[1637,58],"eyesClosed":[1695,52],"wallHold":[1747,43],"standUp":[1790,46],"resume":[1836,21],"demo":[1857,82],"x_toe":[1939,46],"x_knee":[1985,54],"x_thigh":[2039,49],"x_slr":[2088,35],"x_back":[2123,61],"x_out":[2184,65],"x_inn":[2249,45],"x_df":[2294,41],"x_pf":[2335,42],"x_inv":[2377,41],"x_ev":[2418,42],"x_ice":[2460,32],"x_rdf":[2492,46],"x_rpf":[2538,48],"x_rinv":[2586,45],"x_rev":[2631,45],"x_sls":[2676,42],"x_wall":[2718,50],"x_calf":[2768,47],"x_flunge":[2815,45],"x_blunge":[2860,40],"i1":[2900,30],"i2":[2930,31],"i3":[2961,35],"i4":[2996,37],"i5":[3033,37],"i6":[3070,35],"i7":[3105,36],"i8":[3141,34],"i9":[3175,35],"r1":[3210,30],"r2":[3240,29],"r3":[3269,35],"r4":[3304,35],"r5":[3339,32],"r6":[3371,32],"r7":[3403,31],"r8":[3434,30],"r9":[3464,32],"r10":[3496,32],"r11":[3528,37],"r12":[3565,38],"r13":[3603,42],"r14":[3645,39],"r15":[3684,44],"r16":[3728,38],"r17":[3766,40],"r18":[3806,39],"r19":[3845,40],"r20":[3885,35],"m1":[3920,33],"m2":[3953,37],"m3":[3990,38],"m4":[4028,37],"m5":[4065,36],"m6":[4101,37],"m7":[4138,39],"m8":[4177,37],"m9":[4214,35],"m10":[4249,38],"m15":[4287,46],"m16":[4333,46],"m17":[4379,42],"m18":[4421,42],"m19":[4463,46],"m20":[4509,39],"k8":[4548,20],"k9":[4568,27],"k10":[4595,28],"k11":[4623,35],"k12":[4658,34],"k13":[4692,42],"k14":[4734,37],"k15":[4771,38],"k16":[4809,33],"k17":[4842,36],"k18":[4878,32],"k19":[4910,36],"k20":[4946,32],"s15":[4978,38],"s30":[5016,40],"s40":[5056,37],"s50":[5093,37],"s60":[5130,40],"s70":[5170,39],"s80":[5209,34],"s90":[5243,38],"s100":[5281,36],"s110":[5317,52],"s120":[5369,52],"nextIce":[5421,149],"_silence":[5570,1],"bp_go":[5571,13],"bp_hold":[5584,13],"bp_down":[5597,15],"bp_tick":[5612,10],"bp_hi":[5622,21],"x_ankp":[5643,43],"x_pat":[5686,30],"x_ext":[5716,42],"x_flex":[5758,41],"x_squat":[5799,48],"sqDown":[5847,45],"sqUp":[5892,35]},"t":{"start":"开始","timeup":"时间到","hold":"保持","tight":"用力绷紧","relax":"放松","lift":"抬起","lower":"慢慢放下","drop":"慢慢落下","rise":"踮起脚跟","dorsi":"勾脚","plantar":"往下踩","invert":"往里翻","evert":"往外翻","lungeF":"迈步下蹲","lungeB":"后撤下蹲","up":"起来收回","rest":"休息","c1":"一","c2":"二","c3":"三","ten":"还有十秒","left10":"还剩十分钟","left5":"还剩五分钟","left3":"还剩三分钟","left1":"还剩一分钟","next":"下一项","done":"全部做完了，辛苦了","iceDone":"冰敷时间到，可以拿掉冰袋了","tapStart":"准备好了，点开始","supine":"平躺准备","prone":"趴下准备","sideUp":"侧身躺，手术的腿在上","sideDown":"侧躺，手术的腿在下","band":"套好弹力带","stand":"站好准备","wallReady":"背靠墙站好","eyesOpen":"睁眼单腿站","eyesClosed":"闭眼单腿站","wallHold":"开始静蹲","standUp":"起来休息","resume":"继续","demo":"这是练习时的语音提示","x_toe":"脚趾活动","x_knee":"膝关节活动","x_thigh":"大腿绷劲","x_slr":"直抬腿","x_back":"后向直抬腿","x_out":"外向直抬腿","x_inn":"内侧抬腿","x_df":"被动背伸","x_pf":"被动跖屈","x_inv":"被动内翻","x_ev":"被动外翻","x_ice":"冰敷","x_rdf":"抗阻背伸","x_rpf":"抗阻跖屈","x_rinv":"抗阻内翻","x_rev":"抗阻外翻","x_sls":"单腿站立","x_wall":"靠墙静蹲","x_calf":"提踵练习","x_flunge":"前向弓步","x_blunge":"后向弓步","i1":"第一项","i2":"第二项","i3":"第三项","i4":"第四项","i5":"第五项","i6":"第六项","i7":"第七项","i8":"第八项","i9":"第九项","r1":"第一次","r2":"第二次","r3":"第三次","r4":"第四次","r5":"第五次","r6":"第六次","r7":"第七次","r8":"第八次","r9":"第九次","r10":"第十次","r11":"第十一次","r12":"第十二次","r13":"第十三次","r14":"第十四次","r15":"第十五次","r16":"第十六次","r17":"第十七次","r18":"第十八次","r19":"第十九次","r20":"第二十次","m1":"一分钟","m2":"两分钟","m3":"三分钟","m4":"四分钟","m5":"五分钟","m6":"六分钟","m7":"七分钟","m8":"八分钟","m9":"九分钟","m10":"十分钟","m15":"十五分钟","m16":"十六分钟","m17":"十七分钟","m18":"十八分钟","m19":"十九分钟","m20":"二十分钟","k8":"八次","k9":"九次","k10":"十次","k11":"十一次","k12":"十二次","k13":"十三次","k14":"十四次","k15":"十五次","k16":"十六次","k17":"十七次","k18":"十八次","k19":"十九次","k20":"二十次","s15":"十五秒","s30":"三十秒","s40":"四十秒","s50":"五十秒","s60":"六十秒","s70":"七十秒","s80":"八十秒","s90":"九十秒","s100":"一百秒","s110":"一百一十秒","s120":"一百二十秒","nextIce":"下一项是冰敷，准备好冰袋后点开始","x_ankp":"踝泵练习","x_pat":"推髌骨","x_ext":"被动伸膝","x_flex":"被动屈膝","x_squat":"双腿下蹲","sqDown":"慢慢蹲下","sqUp":"站起来"}};
+const VI = VOICE.i, VT = VOICE.t, FB = 96, FD = 0.024;
+
+const doseDefaults = kind => { const o = {}; for (const k in DOSES[kind]) o[k] = DOSES[kind][k].def; return o; };
+const DEF = {
+  v: 3, kind: 'ankle', surgery: '2026-10-13',
+  times: ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
+  doses: {ankle: doseDefaults('ankle'), knee: doseDefaults('knee')}, dose: null,
+  flags: {walking: false, dfOK: false, pfOK: false, invOK: false, evOK: false, slsOK: false, extOK: false, flexOK: false},
+  rhythm: {thigh: true, thighOn: 5, thighOff: 2},
+  voice: {on: true},
+  method: {df: 0, pf: 0, flex: 0},
+  setupDone: false,
+  remind: {on: true, daily: '19:00'},
+  early: []          /* stages started early: {pod, from, to}; "to" is set when undone, so past days keep what they had */
+};
+
+const S = {st: clone(DEF), docs: {}, tab: 'today', view: null, mode: 'loading'};
+S.st.dose = S.st.doses.ankle;
+const viewDate = () => S.view || today();
+const podOf = s => dayNum(s) - dayNum(S.st.surgery);
+const dateOfPod = p => addDays(S.st.surgery, p);
+/* the stage a day's exercises follow: its own day number, or a later stage started early by then */
+const earlyOn = date => S.st.early.filter(e => date >= e.from && (!e.to || date < e.to) && e.pod > podOf(date));
+const stagePod = date => earlyOn(date).reduce((p, e) => Math.max(p, e.pod), podOf(date));
+
+function applySettings() {
+  const s = S.docs.settings || {};
+  const kind = PLANS[s.kind] ? s.kind : 'ankle';          /* before version 3 there was only the ankle plan */
+  const st = {
+    v: 3, kind,
+    surgery: /^\d{4}-\d\d-\d\d$/.test(s.surgery || '') ? s.surgery : DEF.surgery,
+    times: Array.isArray(s.times) && s.times.length === 7 && s.times.every(t => /^\d\d:\d\d$/.test(t)) ? s.times.slice() : DEF.times.slice(),
+    doses: {}, dose: null, flags: Object.assign({}, DEF.flags, s.flags || {}),
+    rhythm: Object.assign({}, DEF.rhythm, s.rhythm || {}),
+    voice: {on: s.voice && s.voice.on === false ? false : true},
+    method: Object.assign({}, DEF.method, s.method || {}),
+    setupDone: !!s.setupDone,
+    remind: {on: !(s.remind && s.remind.on === false), daily: s.remind && /^\d\d:\d\d$/.test(s.remind.daily || '') ? s.remind.daily : DEF.remind.daily},
+    early: (Array.isArray(s.early) ? s.early : []).filter(e => e && PLANS[kind].stages.some(x => x.pod === e.pod) && /^\d{4}-\d\d-\d\d$/.test(e.from || '') && (!e.to || /^\d{4}-\d\d-\d\d$/.test(e.to)))
+      .map(e => ({pod: e.pod, from: e.from, to: e.to || null}))
+  };
+  const saved = Object.assign({}, s.doses || {});
+  if (!saved.ankle && s.dose) saved.ankle = s.dose;          /* versions 1–2 kept one set of amounts, for the ankle */
+  for (const k of Object.keys(DOSES)) {
+    const sd = saved[k] || {}, D = DOSES[k], o = {};
+    for (const x in D) o[x] = clamp(Math.round(+sd[x]) || D[x].def, D[x].min, D[x].max);
+    st.doses[k] = o;
+  }
+  if ((s.v || 1) < 2) {             /* first version: take the rhythm the author described */
+    st.rhythm.thigh = true; st.rhythm.thighOn = 5; st.rhythm.thighOff = 2;
+    st.doses.ankle.slrHold = 10; st.doses.ankle.mHold = 10;
+  }
+  st.rhythm.thighOn = clamp(+st.rhythm.thighOn || 5, 3, 10);
+  st.rhythm.thighOff = clamp(+st.rhythm.thighOff || 2, 1, 10);
+  st.dose = st.doses[kind];         /* the amounts in use: the same object as the current plan's entry, so changes land there */
+  S.st = st;
+}
+/* switching plans: the other plan's own amounts come back; progress switches and early starts belong to the old plan */
+function setKind(kind) {
+  S.st.kind = kind; S.st.dose = S.st.doses[kind];
+  S.st.flags = Object.assign({}, DEF.flags); S.st.early = [];
+}
+
+/* ---------- storage: the viewer's own private records, with a local cache ---------- */
+const LS_KEY = 'ankle-rehab-v1';
+function lsGet() { try { return JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch (e) { return null; } }
+function lsSet() { try { localStorage.setItem(LS_KEY, JSON.stringify({docs: S.docs})); return true; } catch (e) { return false; } }
+const Store = {
+  col: null, chain: {}, timers: {}, localOK: false,
+  async init() {
+    const cached = lsGet();
+    if (cached && cached.docs && typeof cached.docs === 'object') { S.docs = cached.docs; applySettings(); }
+    if (APP) {   /* the app also keeps a copy in its own files; take whichever version of each record is newer */
+      try {
+        const j = nb('loadStore'), nd = j ? (JSON.parse(j).docs || {}) : {};
+        for (const id in nd) { const l = S.docs[id], r = nd[id]; if (r && (!l || (r.upd || 0) > (l.upd || 0))) S.docs[id] = r; }
+        applySettings();
+      } catch (e) {}
+    }
+    this.localOK = lsSet();
+    render();
+    let db = null, user = null, uid = null;
+    try {
+      if (window.claude && typeof window.claude.use === 'function') {
+        [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
+        uid = user ? await user.id() : null;
+      }
+    } catch (e) { db = null; }
+    if (!db || !uid) { S.mode = this.localOK ? 'local' : 'memory'; render(true); return; }
+    let col;
+    try { col = db.collection('data/users/' + uid); } catch (e) { S.mode = this.localOK ? 'local' : 'memory'; render(true); return; }
+    this.col = col;
+    let first = true;
+    col.onSnapshot(snap => {
+      const remote = {};
+      snap.docs.forEach(d => { if (d.exists) remote[d.id] = d.data(); });
+      if (first) {
+        first = false; S.mode = 'db';
+        for (const id in S.docs) {
+          const l = S.docs[id], r = remote[id];
+          if (!r || (l.upd || 0) > (r.upd || 0)) this.write(id, l);
+        }
+      }
+      for (const id in remote) {
+        const l = S.docs[id], r = remote[id];
+        if (!l || (r.upd || 0) >= (l.upd || 0)) S.docs[id] = r;
+      }
+      applySettings(); lsSet(); render(true);
+      if (P.on) refreshPlayerTop();
+    }, () => { this.col = null; S.mode = this.localOK ? 'local' : 'memory'; render(true); });
+  },
+  put(id, doc, delay) {
+    doc.upd = Date.now();
+    S.docs[id] = doc;
+    lsSet();
+    if (APP) { clearTimeout(this.mirrorT); this.mirrorT = setTimeout(() => nb('saveStore', JSON.stringify({docs: S.docs})), 400); }
+    if (!this.col) return;
+    clearTimeout(this.timers[id]);
+    if (delay) this.timers[id] = setTimeout(() => this.write(id, S.docs[id]), delay);
+    else this.write(id, doc);
+  },
+  write(id, doc) {
+    const col = this.col; if (!col) return;
+    const body = clone(doc);
+    const once = () => col.doc(id).set(body);
+    this.chain[id] = (this.chain[id] || Promise.resolve()).then(once).catch(e => {
+      const code = e && e.code;
+      if (code === 'unavailable' || code === 'resource_exhausted') return new Promise(r => setTimeout(r, 900 + Math.random() * 900)).then(once).catch(() => {});
+      if (code === 'quota_exceeded') toast('账号里的记录空间满了，这条只存在这台设备上。');
+    });
+  }
+};
+function saveSettings() { Store.put('settings', Object.assign({kind: 'settings'}, clone(S.st)), 600); }
+function dayDoc(date) {
+  const d = S.docs['d' + date]; const o = d ? clone(d) : {};
+  o.kind = 'day'; o.date = date; o.s = o.s || {}; o.ice = o.ice || []; if (!('pain' in o)) o.pain = null;
+  return o;
+}
+function sessRec(date, sid) { const d = S.docs['d' + date]; return (d && d.s && d.s[sid]) || null; }
+
+/* ---------- what a given day contains ---------- */
+const mk = (ex, extra) => Object.assign({ex}, extra || {});
+function planFor(date) {
+  /* pod: the day number (also used for the moves done from the day of surgery); xp: the stage the exercises follow */
+  const pod = podOf(date), xp = stagePod(date), d = S.st.dose, f = S.st.flags;
+  const rounds = S.st.times.map((t, i) => ({id: 'r' + (i + 1), n: i + 1, time: t, items: []}));
+  return S.st.kind === 'knee' ? planKnee(date, pod, xp, d, f, rounds) : planAnkle(date, pod, xp, d, f, rounds);
+}
+/* 前交叉韧带重建术后康复计划 (北医三院运动医学科): rounds every two hours, the rest once or twice a day */
+function planKnee(date, pod, xp, d, f, rounds) {
+  const daily = [];
+  if (pod >= 0 && !f.walking) {
+    rounds.forEach(r => r.items.push(mk('ankp')));
+    MAP.thigh[d.thighHrs].forEach(i => rounds[i].items.push(mk('thigh')));
+  }
+  if (xp >= 1 && xp <= 42) MAP.slr[d.slrSets].forEach(i => rounds[i].items.push(mk('slr')));
+  if (xp >= 4 && !f.flexOK) MAP.pat[d.patN].forEach(i => rounds[i].items.push(mk('pat')));
+  if (xp >= 4 && xp <= 42) MAP.multi[d.mSets].forEach(i => MULTI.forEach(k => rounds[i].items.push(mk(k, {early: xp < 7}))));
+  if (xp >= 1 && !f.extOK) {
+    daily.push({id: 'ext', name: '被动伸膝', items: [mk('ext')], note: '轻到中度疼痛、冰敷后疼痛消失为宜。伸膝困难的在膝关节上方的大腿上加2–3公斤重物或请家人帮忙压直，别把重物直接压在膝盖上。'});
+    if (d.extSess === 2) daily.push({id: 'ext2', name: '被动伸膝 第2次', items: [mk('ext')], optional: true});
+  }
+  if (xp >= 4 && !f.flexOK) daily.push({id: 'flex', name: '被动屈膝 + 冰敷', items: [mk('flex'), mk('ice')],
+    note: '做完立即冰敷20分钟。参考角度：第4周90–110°，第8周110–130°，3个月左右接近正常；和参考差得不多就别硬掰，每周有进步就行。'});
+  const s1 = [], s2 = [], s3 = [];
+  if (xp >= 15 && !f.slsOK) { s1.push(mk('sls')); s2.push(mk('sls')); }
+  if (xp >= 29 && xp <= 182) {
+    s1.push(mk('wall'));
+    B9K.forEach(k => s1.push(mk(k))); B9K.forEach(k => s2.push(mk(k)));
+    if (d.b9Sets === 3) B9K.forEach(k => s3.push(mk(k)));
+  }
+  [s1, s2, s3].forEach((its, i) => { if (its.length) daily.push({id: 's' + (i + 1), name: its.every(x => x.ex === 'sls') ? '单腿站立 第' + (i + 1) + '组' : '力量训练 第' + (i + 1) + '次', items: its,
+    note: xp >= 29 && xp <= 182 ? '靠墙静蹲、双腿下蹲、弓步可以每天做，也可以隔天做。' : ''}); });
+  return {date, pod, xp, rounds: rounds.filter(r => r.items.length), daily, extraIce: xp >= 4};
+}
+/* 外踝韧带止点重建术后康复计划 (北医三院运动医学科) */
+function planAnkle(date, pod, xp, d, f, rounds) {
+  const daily = [];
+  if (pod >= 0 && !f.walking) {
+    rounds.forEach(r => { r.items.push(mk('toe')); r.items.push(mk('knee')); });
+    MAP.thigh[d.thighHrs].forEach(i => rounds[i].items.push(mk('thigh')));
+  }
+  if (xp >= 1 && xp <= 42) MAP.slr[d.slrSets].forEach(i => rounds[i].items.push(mk('slr')));
+  if (xp >= 4 && xp <= 42) MAP.multi[d.mSets].forEach(i => MULTI.forEach(k => rounds[i].items.push(mk(k, {early: xp < 7}))));
+  if (xp >= 15) {
+    const adv = xp >= 43, its = [];
+    if (!f.dfOK) its.push(mk('df', {adv}));
+    if (!f.pfOK) its.push(mk('pf', {adv}));
+    if (xp >= 29 && !f.invOK) its.push(mk('inv'));
+    if (xp >= 29 && !f.evOK) its.push(mk('ev'));
+    if (its.length) { its.push(mk('ice')); daily.push({id: 'rom', name: '角度练习 + 冰敷', items: its, tag: xp <= 42 ? '早期找家属帮忙' : '', note: '每次被动活动后，立即冰敷20分钟。'}); }
+    if (xp >= 29 && d.ivSess === 2 && (!f.invOK || !f.evOK)) {
+      const its2 = [];
+      if (!f.invOK) its2.push(mk('inv'));
+      if (!f.evOK) its2.push(mk('ev'));
+      its2.push(mk('ice'));
+      daily.push({id: 'rom2', name: '内翻外翻第2次 + 冰敷', items: its2, optional: true});
+    }
+  }
+  const s1 = [], s2 = [], s3 = [];
+  if (xp >= 43 && xp <= 182) { RES4.forEach(k => s1.push(mk(k))); if (d.strSets === 2) RES4.forEach(k => s2.push(mk(k))); }
+  if (xp >= 57) {
+    if (!f.slsOK) { s1.push(mk('sls')); s2.push(mk('sls')); }
+    if (xp <= 182) {
+      s1.push(mk('wall'));
+      B9.forEach(k => s1.push(mk(k))); B9.forEach(k => s2.push(mk(k)));
+      if (d.b9Sets === 3) B9.forEach(k => s3.push(mk(k)));
+    }
+  }
+  [s1, s2, s3].forEach((its, i) => { if (its.length) daily.push({id: 's' + (i + 1), name: '力量训练 第' + (i + 1) + '次', items: its, note: xp >= 57 && xp <= 182 ? '靠墙静蹲、提踵、弓步可以每天做，也可以隔天做。' : ''}); });
+  return {date, pod, xp, rounds: rounds.filter(r => r.items.length), daily, extraIce: xp >= 15};
+}
+const iceSession = () => ({id: 'ice', name: '冰敷', items: [mk('ice')], counter: true});
+function sessionById(date, sid) {
+  if (sid === 'ice') return iceSession();
+  const p = planFor(date);
+  return p.rounds.concat(p.daily).find(s => s.id === sid) || null;
+}
+const sessTitle = s => s.time ? '第' + s.n + '轮' : s.name;
+
+function doseText(it) {
+  const d = S.st.dose;
+  switch (it.ex) {
+    case 'toe': return d.toeMin + ' 分钟';
+    case 'ankp': return d.ankpMin + ' 分钟';
+    case 'pat': return d.patMin + ' 分钟';
+    case 'ext': return d.extMin + ' 分钟';
+    case 'flex': return d.flexMin + ' 分钟';
+    case 'squat': return d.b9Reps + ' 次';
+    case 'knee': return d.kneeMin + ' 分钟';
+    case 'thigh': return d.thighMin + ' 分钟';
+    case 'slr': return '10 次 · 每次保持 ' + d.slrHold + ' 秒';
+    case 'back': case 'out': case 'inn': return d.mReps + ' 次 · 每次保持 ' + d.mHold + ' 秒';
+    case 'df': case 'pf': return d.romMin + ' 分钟';
+    case 'inv': case 'ev': return '10 分钟';
+    case 'ice': return '20 分钟';
+    case 'sls': return '睁眼30秒×' + d.slsN + '，闭眼15秒×' + d.slsN;
+    case 'wall': return d.wallSec + ' 秒 × ' + d.wallN + ' 个';
+    case 'calf': return d.b9Reps + ' 次 · 每次停留 ' + d.calfHold + ' 秒';
+    case 'flunge': case 'blunge': return d.b9Reps + ' 次';
+    default: return d.strReps + ' 次 · 每次停留 ' + d.strHold + ' 秒';
+  }
+}
+function chipsFor(items) { return chipList(items).map(x => '<span>' + esc(x) + '</span>').join('<i>·</i>'); }
+function chipList(items) {
+  const d = S.st.dose, out = [], seen = {};
+  items.forEach(it => {
+    if (MULTI.includes(it.ex)) { if (!seen.m) { seen.m = 1; out.push('各方向抬腿 1组'); } return; }
+    if (RES4.includes(it.ex)) { if (!seen.r) { seen.r = 1; out.push('抗阻 ×4'); } return; }
+    const e = EX[it.ex];
+    const t = {toe: e.short + ' ' + d.toeMin + '分', knee: e.short + ' ' + d.kneeMin + '分', ankp: e.short + ' ' + d.ankpMin + '分', pat: e.short + ' ' + d.patMin + '分',
+      ext: e.short + ' ' + d.extMin + '分', flex: e.short + ' ' + d.flexMin + '分', thigh: e.short + ' ' + d.thighMin + '分', slr: '直抬腿 1组',
+      df: e.short + ' ' + d.romMin + '分', pf: e.short + ' ' + d.romMin + '分', inv: '内翻 10分', ev: '外翻 10分', ice: '冰敷 20分'}[it.ex] || e.short;
+    out.push(t);
+  });
+  return out;
+}
+function methodsFor(it) { const e = EX[it.ex]; return it.adv ? e.methods.concat(e.adv) : e.methods; }
+function methodIdx(it) { const ms = methodsFor(it); const i = (S.st.method[it.ex] | 0); return i >= 0 && i < ms.length ? i : 0; }
+function videoName(it) { const e = EX[it.ex]; return e.methods ? methodsFor(it)[methodIdx(it)].v : (S.st.kind === 'knee' && e.videoK) || e.video; }
+
+/* ---------- each item becomes timed phases plus voice cues (t in seconds from the first move) ---------- */
+function fin(p) { let t = 0; p.starts = p.phases.map(x => { const s = t; t += x.dur; return s; }); p.total = t; return p; }
+function countdown(cues, end) { [3, 2, 1].forEach(n => cues.push({t: end - n, k: ['c' + n], p: 2})); }
+function tTimer(total, rhythm, label, endKey, kind) {
+  const p = {mode: 'time', phases: [], cues: [], rhythm: !!rhythm, ice: kind === 'ice'};
+  if (rhythm) {
+    let t = 0, g = 0;
+    while (t < total - 0.01 && g++ < 5000) for (const r of rhythm) {
+      if (t >= total - 0.01) break;
+      const dur = Math.min(r.sec, total - t);
+      p.phases.push({label: r.label, dur, kind: r.kind, tight: r.key === 'tight'});
+      p.cues.push({t, k: [r.key], p: t === 0 ? 3 : 1});
+      t += dur;
+    }
+  } else { p.phases.push({label, dur: total, kind: kind || 'go'}); p.cues.push({t: 0, k: ['start'], p: 3}); }
+  fin(p);
+  [10, 5, 3, 1].filter(m => m * 60 <= total - 60).forEach(m => {
+    let at = total - m * 60;
+    /* inside a rhythm, say it just after a "tighten" call so it never covers "relax" */
+    if (rhythm) { const i = p.phases.findIndex((ph, j) => ph.tight && p.starts[j] >= at - 0.01); if (i >= 0) at = p.starts[i] + 1.0; }
+    p.cues.push({t: at, k: ['left' + m], p: 3});
+  });
+  p.cues.push({t: total, k: [endKey || 'timeup'], p: 3});
+  return p;
+}
+function tHold(n, hold, upKey, upLabel, lowerKey, lowerLabel, rest) {
+  const p = {mode: 'reps', phases: [], cues: [], n};
+  let t = 0;
+  for (let r = 1; r <= n; r++) {
+    p.phases.push({label: upLabel, dur: 2, kind: 'go', rep: r}); p.cues.push({t, k: ['r' + r, upKey], p: 2}); t += 2;
+    p.phases.push({label: '保持', dur: hold, kind: 'hold', rep: r, count: true}); p.cues.push({t, k: ['hold'], p: 2});
+    if (hold >= 5) countdown(p.cues, t + hold);
+    t += hold;
+    p.phases.push({label: lowerLabel, dur: 3, kind: 'go', rep: r}); p.cues.push({t, k: [lowerKey], p: 2}); t += 3;
+    if (r < n && rest) { p.phases.push({label: '休息', dur: rest, kind: 'rest', rep: r}); t += rest; }
+  }
+  return fin(p);
+}
+function tReps(n, aKey, aLabel, bKey, bLabel) {
+  const p = {mode: 'reps', phases: [], cues: [], n};
+  let t = 0;
+  for (let r = 1; r <= n; r++) {
+    p.phases.push({label: aLabel, dur: 3, kind: 'go', rep: r}); p.cues.push({t, k: ['r' + r, aKey], p: 2}); t += 3;
+    p.phases.push({label: bLabel, dur: 3, kind: 'go', rep: r}); p.cues.push({t, k: [bKey], p: 2}); t += 3;
+    if (r < n) { p.phases.push({label: '停一下', dur: 1, kind: 'rest', rep: r}); t += 1; }
+  }
+  return fin(p);
+}
+function tHolds(list, rest, restKey) {
+  const p = {mode: 'holds', phases: [], cues: [], n: list.length};
+  let t = 0;
+  list.forEach((h, i) => {
+    p.phases.push({label: h.label, dur: h.sec, kind: 'hold', rep: i + 1}); p.cues.push({t, k: ['r' + (i + 1)].concat(h.keys, ['s' + h.sec]), p: 3});
+    if (h.sec >= 25) p.cues.push({t: t + h.sec - 10, k: ['ten'], p: 2});
+    countdown(p.cues, t + h.sec); t += h.sec;
+    if (i < list.length - 1) { p.phases.push({label: '休息', dur: rest, kind: 'rest', rep: i + 1}); p.cues.push({t, k: [restKey], p: 2}); countdown(p.cues, t + rest); t += rest; }
+  });
+  return fin(p);
+}
+function buildProgram(it) {
+  const d = S.st.dose, R = S.st.rhythm;
+  switch (it.ex) {
+    case 'toe': return tTimer(d.toeMin * 60, null, '动脚趾，到时间会提醒');
+    case 'ankp': return tTimer(d.ankpMin * 60, null, '勾脚、踩脚，到时间会提醒');
+    case 'pat': return tTimer(d.patMin * 60, null, '上下左右推髌骨，到时间会提醒');
+    case 'ext': return tTimer(d.extMin * 60, null, '伸直到最大，能忍受就好');
+    case 'flex': return tTimer(d.flexMin * 60, null, '弯到最大角度，能忍受就好');
+    case 'squat': return tReps(d.b9Reps, 'sqDown', '慢慢蹲下', 'sqUp', '站起来');
+    case 'knee': return tTimer(d.kneeMin * 60, null, '弯、伸膝关节，到时间会提醒');
+    case 'thigh': return tTimer(d.thighMin * 60, R.thigh ? [{label: '用力绷紧', sec: R.thighOn, key: 'tight', kind: 'hold'}, {label: '放松', sec: R.thighOff, key: 'relax', kind: 'rest'}] : null, '绷紧、放松，自己掌握节奏');
+    case 'slr': return tHold(10, d.slrHold, 'lift', '抬起', 'lower', '慢慢放下', 3);
+    case 'back': case 'out': case 'inn': return tHold(d.mReps, d.mHold, 'lift', '抬起', 'lower', '慢慢放下', 3);
+    case 'df': case 'pf': return tTimer(d.romMin * 60, null, '压到最大角度，能忍受就好');
+    case 'inv': case 'ev': return tTimer(600, null, '翻到最大角度，能忍受就好');
+    case 'ice': return tTimer(1200, null, '冰敷中', 'iceDone', 'ice');
+    case 'rdf': return tHold(d.strReps, d.strHold, 'dorsi', '勾脚', 'lower', '慢慢放下', 2);
+    case 'rpf': return tHold(d.strReps, d.strHold, 'plantar', '往下踩', 'lower', '慢慢放下', 2);
+    case 'rinv': return tHold(d.strReps, d.strHold, 'invert', '往里翻', 'lower', '慢慢放下', 2);
+    case 'rev': return tHold(d.strReps, d.strHold, 'evert', '往外翻', 'lower', '慢慢放下', 2);
+    case 'calf': return tHold(d.b9Reps, d.calfHold, 'rise', '踮起脚跟', 'drop', '慢慢落下', 2);
+    case 'flunge': return tReps(d.b9Reps, 'lungeF', '迈步下蹲', 'up', '起来收回');
+    case 'blunge': return tReps(d.b9Reps, 'lungeB', '后撤下蹲', 'up', '起来收回');
+    case 'sls': { const a = []; for (let i = 0; i < d.slsN; i++) a.push({label: '睁眼', sec: 30, keys: ['eyesOpen']}); for (let i = 0; i < d.slsN; i++) a.push({label: '闭眼', sec: 15, keys: ['eyesClosed']}); return tHolds(a, 10, 'rest'); }
+    case 'wall': { const a = []; for (let i = 0; i < d.wallN; i++) a.push({label: '静蹲', sec: d.wallSec, keys: ['wallHold']}); return tHolds(a, 30, 'standUp'); }
+  }
+}
+const sessSeconds = s => s.items.reduce((a, it) => a + (PREP[it.ex] || 8) + buildProgram(it).total, 0) + 4;
+const sessMin = s => Math.max(1, Math.round(sessSeconds(s) / 60));
+function snapOf(it) {
+  const d = S.st.dose;
+  switch (it.ex) {
+    case 'toe': return {min: d.toeMin};
+    case 'ankp': return {min: d.ankpMin};
+    case 'pat': return {min: d.patMin};
+    case 'ext': return {min: d.extMin};
+    case 'flex': return {min: d.flexMin, method: methodsFor(it)[methodIdx(it)].n};
+    case 'squat': return {reps: d.b9Reps};
+    case 'knee': return {min: d.kneeMin};
+    case 'thigh': return {min: d.thighMin};
+    case 'slr': return {reps: 10, hold: d.slrHold};
+    case 'back': case 'out': case 'inn': return {reps: d.mReps, hold: d.mHold};
+    case 'df': case 'pf': return {min: d.romMin, method: methodsFor(it)[methodIdx(it)].n};
+    case 'inv': case 'ev': return {min: 10};
+    case 'ice': return {min: 20};
+    case 'sls': return {n: d.slsN};
+    case 'wall': return {sec: d.wallSec, n: d.wallN};
+    case 'calf': return {reps: d.b9Reps, hold: d.calfHold};
+    case 'flunge': case 'blunge': return {reps: d.b9Reps};
+    default: return {reps: d.strReps, hold: d.strHold};
+  }
+}
+
+/* ---------- a track: consecutive items laid end to end on one clock ---------- */
+function introKeys(sess, i, first) {
+  const it = sess.items[i], d = S.st.dose;
+  const dose = {toe: 'm' + d.toeMin, knee: 'm' + d.kneeMin, ankp: 'm' + d.ankpMin, pat: 'm' + d.patMin, ext: 'm' + d.extMin, flex: 'm' + d.flexMin, squat: 'k' + d.b9Reps, thigh: 'm' + d.thighMin, df: 'm' + d.romMin, pf: 'm' + d.romMin, inv: 'm10', ev: 'm10', ice: 'm20',
+    slr: 'k10', back: 'k' + d.mReps, out: 'k' + d.mReps, inn: 'k' + d.mReps, rdf: 'k' + d.strReps, rpf: 'k' + d.strReps, rinv: 'k' + d.strReps, rev: 'k' + d.strReps,
+    calf: 'k' + d.b9Reps, flunge: 'k' + d.b9Reps, blunge: 'k' + d.b9Reps}[it.ex];
+  return [first ? null : 'next', sess.items.length > 1 ? 'i' + (i + 1) : null, 'x_' + it.ex, dose].filter(Boolean);
+}
+function buildTrack(sess, from) {
+  const tr = {from, segs: [], cues: [], total: 0};
+  let T = 0, o = 0;
+  const add = (t, k, p) => tr.cues.push({t, k, p, o: o++});
+  for (let i = from; i < sess.items.length; i++) {
+    const it = sess.items[i];
+    if (i > from && MANUAL[it.ex]) break;
+    const prog = buildProgram(it), prep = PREP[it.ex] || 8;
+    add(T, introKeys(sess, i, i === from), 3);
+    if (POS[it.ex]) add(T, [POS[it.ex]], 3);
+    prog.cues.forEach(c => add(T + prep + c.t, c.k, c.p));
+    tr.segs.push({idx: i, start: T, prepEnd: T + prep, end: T + prep + prog.total, prog});
+    T += prep + prog.total;
+  }
+  const last = tr.segs[tr.segs.length - 1].idx, nx = sess.items[last + 1];
+  if (nx) add(T + 0.3, nx.ex === 'ice' ? ['nextIce'] : ['next', 'x_' + nx.ex, 'tapStart'], 3);
+  else if (sess.items[last].ex !== 'ice') add(T + 0.3, ['done'], 3);
+  tr.total = T + 4;
+  return tr;
+}
+function beepKey(c) {
+  const k = c.k[0];
+  if (/^c\d$/.test(k)) return 'bp_tick';
+  if (k === 'tight' || k === 'hold') return 'bp_hold';
+  if (['relax', 'lower', 'drop', 'rest', 'standUp', 'up'].includes(k)) return 'bp_down';
+  return c.p >= 3 ? 'bp_hi' : 'bp_go';
+}
+/* lay the clips onto a silent MP3 of the track's full length; every frame decodes on its own, so they can be spliced anywhere */
+const V = {state: 'idle', buf: null};
+function placeTrack(tr) {
+  const voice = S.st.voice.on, placed = [];
+  let cur = 0;
+  const cues = tr.cues.slice().sort((a, b) => a.t - b.t || a.o - b.o);
+  for (const c of cues) {
+    const keys = voice ? c.k.filter(k => VI[k]) : [beepKey(c)];
+    if (!keys.length) continue;
+    let f = Math.max(Math.round(c.t / FD), cur ? cur + 2 : 0);
+    if (c.p <= 1 && f * FD - c.t > 0.6) continue;     /* a rhythm call that would land late is dropped, not shifted */
+    for (const k of keys) { const [f0, n] = VI[k]; placed.push(f, f0, n); f += n + 1; }
+    cur = f;
+  }
+  return {total: Math.max(Math.ceil(tr.total / FD), cur + 4), placed};
+}
+function renderTrack(tr) {
+  const vb = V.buf, pl = placeTrack(tr), total = pl.total, placed = pl.placed;
+  const out = new Uint8Array(total * FB), s0 = VI._silence[0] * FB;
+  out.set(vb.subarray(s0, s0 + FB), 0);
+  for (let filled = FB; filled < out.length; filled *= 2) out.copyWithin(filled, 0, Math.min(filled, out.length - filled));
+  for (let i = 0; i < placed.length; i += 3) {
+    const f = placed[i], f0 = placed[i + 1], n = Math.min(placed[i + 2], total - f);
+    if (n > 0) out.set(vb.subarray(f0 * FB, (f0 + n) * FB), f * FB);
+  }
+  return new Blob([out], {type: 'audio/mpeg'});
+}
+function loadVoice() {
+  if (V.state === 'loading' || V.state === 'ready') return;
+  V.state = 'loading';
+  fetch('voice.mp3').then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.arrayBuffer(); }).then(ab => {
+    const b = new Uint8Array(ab);
+    if (b.length < (VI._silence[0] + 1) * FB || b[0] !== 0xFF) throw new Error('bad voice file');
+    V.buf = b; V.state = 'ready';
+  }).catch(() => { V.state = 'failed'; }).then(() => {
+    if (S.tab === 'settings' && !P.on) render(true);
+    if (P.on && P.state === 'overview') drawPlayer();
+  });
+}
+
+/* ---------- sound fallbacks: the phone's own speech, and plain beeps ---------- */
+let AC = null;
+function audio() { try { if (!AC) { const C = window.AudioContext || window.webkitAudioContext; if (C) AC = new C(); } if (AC && AC.state === 'suspended') AC.resume(); } catch (e) { AC = null; } return AC; }
+function beep(f, dur, vol, when) {
+  const ac = audio(); if (!ac) return;
+  try {
+    const t = ac.currentTime + (when || 0), o = ac.createOscillator(), g = ac.createGain();
+    o.type = 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.18, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + dur + 0.05);
+  } catch (e) {}
+}
+function chime() { beep(659, 0.2, 0.2, 0); beep(880, 0.2, 0.2, 0.16); beep(1175, 0.35, 0.2, 0.32); }
+function toneOf(c) { const b = beepKey(c); return {bp_tick: [1320, 0.06], bp_hold: [1175, 0.14], bp_down: [660, 0.16], bp_hi: [1047, 0.2], bp_go: [880, 0.12]}[b]; }
+const Voice = {
+  has: typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined',
+  v: null,
+  init() {
+    if (!this.has) return;
+    const pick = () => {
+      try {
+        const vs = speechSynthesis.getVoices() || [];
+        this.v = vs.find(x => /^zh[-_]CN/i.test(x.lang)) || vs.find(x => /^(zh|cmn)/i.test(x.lang) && !/HK|TW|yue/i.test(x.lang)) || vs.find(x => /^(zh|cmn)/i.test(x.lang)) || null;
+      } catch (e) {}
+    };
+    pick();
+    try { speechSynthesis.addEventListener('voiceschanged', pick); } catch (e) { try { speechSynthesis.onvoiceschanged = pick; } catch (_) {} }
+  },
+  cue(c) {
+    const text = c.k.map(k => VT[k] || '').filter(Boolean).join('，');
+    const beepIt = () => { const t = toneOf(c); beep(t[0], t[1], 0.18); };
+    if (!S.st.voice.on || !this.has || !text) { beepIt(); return; }
+    try {
+      if (speechSynthesis.speaking || speechSynthesis.pending) { if (c.p <= 1) { beepIt(); return; } speechSynthesis.cancel(); }
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'zh-CN'; if (this.v) u.voice = this.v;
+      if (speechSynthesis.paused) speechSynthesis.resume();
+      speechSynthesis.speak(u);
+    } catch (e) { beepIt(); }
+  },
+  stop() { try { if (this.has) speechSynthesis.cancel(); } catch (e) {} }
+};
+let WL = null;
+async function wake(on) {
+  try {
+    if (on) { if (!WL && navigator.wakeLock) { WL = await navigator.wakeLock.request('screen'); WL.addEventListener('release', () => { WL = null; }); } }
+    else if (WL) { const w = WL; WL = null; await w.release(); }
+  } catch (e) { WL = null; }
+}
+
+/* ---------- coach (player) ---------- */
+const AUD = $('#aud');
+const P = {on: false};
+function openPlayer(date, sid) {
+  const sess = sessionById(date, sid); if (!sess) return;
+  const t = today(), rec = sess.counter ? null : sessRec(date, sid);
+  Object.assign(P, {on: true, date, sess, mode: date === t ? 'live' : (date < t ? 'past' : 'future'), state: 'overview', paused: false, confirm: false, track: null, skip: [], engine: null, trackId: null, redraw: false});
+  P.res = rec && !rec.done && rec.res ? clone(rec.res) : {};
+  P.idx = Math.max(0, sess.items.findIndex(it => !P.res[it.ex]));
+  loadVoice();
+  document.body.classList.add('noscroll');
+  $('#player').hidden = false;
+  if (APP) nb('setBars', true);
+  drawPlayer();
+  $('#player').scrollTop = 0;
+}
+function refreshPlayerTop() {
+  const s = P.sess;
+  $('#pSess').innerHTML = s.time ? '第' + s.n + '轮 <span class="num">' + s.time + '</span>' : esc(s.name);
+  $('#pStep').textContent = (P.state === 'ready' || P.state === 'run') && s.items.length > 1 ? '第 ' + (P.idx + 1) + '/' + s.items.length + ' 项' : '';
+  const vb = $('#pVoiceBtn'); vb.setAttribute('aria-pressed', S.st.voice.on ? 'true' : 'false'); vb.textContent = S.st.voice.on ? '语音提示' : '只用提示音';
+}
+function drawPlayer() {
+  refreshPlayerTop();
+  const body = $('#pBody');
+  if (P.state === 'overview') body.innerHTML = pOverview();
+  else if (P.state === 'ready') body.innerHTML = pReady();
+  else if (P.state === 'run') { body.innerHTML = pRun(); drawRun(clockNow()); }
+  else if (P.state === 'done') body.innerHTML = pDone();
+}
+function methodRow(it) {
+  if (!EX[it.ex].methods) return '';
+  const ms = methodsFor(it), mi = methodIdx(it);
+  return '<div class="p-mrow"><div class="p-meths" role="group" aria-label="' + esc(EX[it.ex].name) + '的做法">' + ms.map((m, i) => '<button data-act="p-meth" data-ex="' + it.ex + '" data-i="' + i + '" aria-pressed="' + (i === mi) + '">' + esc(m.n) + '</button>').join('') + '</div></div>';
+}
+function soundTip() {
+  if (APP) return '开始后语音会一直带着你做，可以锁屏、切到别的 App。通知栏和锁屏上能暂停、跳到下一项。';
+  if (WEB && INAPP) return '现在是在别的 App 里打开的网页，锁屏后可能没声音。点右上角「···」，选「在浏览器打开」更稳。';
+  if (WEB && V.state === 'ready') return '开始后语音会一直带着你做，可以锁屏、切到别的 App；锁屏界面上能暂停、跳到下一项。别的 App 一出声音（比如刷视频），这边会被暂停，回来点「继续」就行。';
+  if (V.state === 'ready') return '开始后语音会一直带着你做，可以锁屏、切到别的 App；锁屏界面上也能暂停。如果锁屏后没声音，用手机浏览器打开这个页面再试。';
+  if (V.state === 'failed') return '语音包没加载成功，这次用手机自带的语音：练的时候别锁屏，页面开着才有提示。';
+  return '语音包正在加载…';
+}
+function pOverview() {
+  const s = P.sess, rec = s.counter ? null : sessRec(P.date, s.id), n = Object.keys(P.res).length;
+  let head = '';
+  if (rec && rec.done) head = '<p class="p-note">这一轮' + (rec.manual ? '已在 ' + hm(rec.at) + ' 打勾' : '已在 ' + hm(rec.at) + ' 做完') + '，想再做一遍也可以。</p>';
+  else if (n) head = '<p class="p-note">上次做完了 ' + n + ' 项，这次从第 ' + (P.idx + 1) + ' 项接着做。</p>';
+  const list = s.items.map((it, i) => '<li class="' + (P.res[it.ex] ? 'done' : '') + '"><span class="n num">' + (i + 1) + '</span><span class="nm">' + esc(EX[it.ex].name) + (it.early ? '<em>第4–7天开始</em>' : '') + '</span><span class="ds">' + esc(doseText(it)) + '</span>' + methodRow(it) + '</li>').join('');
+  let btn;
+  if (P.mode === 'live') btn = '<button class="p-go" data-act="p-start">' + (n ? '接着做' : '开始') + '</button>';
+  else if (P.mode === 'past') btn = (rec && rec.done) ? '<p class="p-tip">这一天的记录已经有了。</p>' : '<button class="p-go ghost" data-act="p-mark">补记为已完成</button>';
+  else btn = '<p class="p-note">这是 ' + md(P.date) + ' 的安排，到那天再开始。</p>';
+  return '<div class="p-ov">' +
+    '<div class="p-eyebrow">' + (s.time ? md(P.date) + ' · ' : '') + '约 ' + sessMin(s) + ' 分钟 · ' + s.items.length + ' 项</div>' +
+    '<h2 class="p-title">' + esc(s.time ? '第' + s.n + '轮' : s.name) + '</h2>' + head +
+    '<ol class="p-list">' + list + '</ol><div class="p-spacer"></div>' + btn +
+    (P.mode === 'live' ? '<p class="p-tip">' + soundTip() + '</p>' : '') + '</div>';
+}
+function painChips(it) {
+  const e = EX[it.ex];
+  return (e.pain ? '<span class="pc ' + PAIN[e.pain][1] + '">' + PAIN[e.pain][0] + '</span>' : '') + (e.why ? '<span class="pc">' + esc(e.why) + '</span>' : '') +
+    (it.early ? '<span class="pc mid">第4–7天之间开始，不舒服先跳过</span>' : '');
+}
+const copyBtn = it => { const vn = videoName(it); return '<button class="p-copy" data-act="copy" data-v="' + esc(vn) + '">复制「' + esc(vn) + '」，去公众号看视频</button>'; };
+function pReady() {
+  const it = P.sess.items[P.idx], e = EX[it.ex];
+  return '<div class="p-ready"><div class="p-eyebrow">下一项</div><h2 class="p-name">' + esc(e.name) + '</h2><div class="p-chips">' + painChips(it) + '</div>' +
+    '<p class="p-how">' + esc(e.how) + '</p>' + copyBtn(it) + '<div class="p-spacer"></div>' +
+    '<button class="p-go" data-act="p-go">准备好了，开始 · ' + esc(doseText(it)) + '</button><button class="p-skip" data-act="p-skipready">跳过这项</button></div>';
+}
+function pRun() {
+  const it = P.sess.items[P.idx], next = P.sess.items[P.idx + 1];
+  return '<div class="p-run"><h2 class="p-name">' + esc(EX[it.ex].name) + '</h2><div class="p-chips">' + painChips(it) + '</div>' +
+    '<div class="ring-wrap"><svg class="ring" id="pRing" viewBox="0 0 200 200" aria-hidden="true"><circle class="trk" cx="100" cy="100" r="92"/><circle class="arc" id="pArc" cx="100" cy="100" r="92" stroke-dasharray="578.05" stroke-dashoffset="578.05"/></svg>' +
+    '<div class="ring-c"><div class="p-big" id="pBig" aria-live="off"></div><div class="p-sub" id="pSub"></div></div></div>' +
+    '<div class="p-meta" id="pMeta"></div><div class="p-paused" id="pPaused" hidden>已暂停</div>' +
+    '<div class="p-ctl"><button class="p-pause" id="pPauseBtn" data-act="p-pause">暂停</button><button class="p-nextbtn" data-act="p-next">下一项 ›</button></div>' +
+    '<div class="p-upnext">' + (next ? '接下来：' + esc(EX[next.ex].name) + ' · ' + esc(doseText(next)) : '这是最后一项') + '</div>' + copyBtn(it) +
+    '<p class="p-tip">' + (P.engine === 'native' ? '可以锁屏、切到别的 App；通知栏能暂停、跳到下一项。' : P.engine === 'audio' ? (WEB ? '可以锁屏、切到别的 App，语音会继续；别的 App 一出声音，这边会暂停。' : '可以锁屏、切到别的 App，语音会继续。') : '现在用的是手机自带语音：别锁屏。') + '</p></div>';
+}
+function pDone() {
+  const s = P.sess, any = Object.keys(P.res).length;
+  const list = s.items.map(it => '<li><span class="n"></span><span class="nm">' + esc(EX[it.ex].name) + '</span><span class="ds">' + (P.res[it.ex] ? '完成' : '跳过') + '</span></li>').join('');
+  let tail = '';
+  if (s.time) {
+    const plan = planFor(P.date), dn = plan.rounds.filter(r => isDoneOn(P.date, r)).length, nx = nextRound(plan, P.date, nowMin());
+    tail = '<p class="p-tip">今天已完成 ' + dn + '/' + plan.rounds.length + ' 轮' + (nx ? '，下一轮 ' + nx.time : '') + '。</p>';
+  }
+  if (s.counter) tail = '<p class="p-tip">今天额外冰敷 ' + dayDoc(P.date).ice.length + ' 次。</p>';
+  return '<div class="p-done">' + (any || s.counter ? '<div class="p-check">' + CHECK + '</div>' : '') +
+    '<h2 class="p-title">' + (any || s.counter ? esc(sessTitle(s)) + '完成' : '这一轮都跳过了') + '</h2>' +
+    (s.counter ? '' : '<ul class="p-list">' + list + '</ul>') + tail +
+    '<div class="p-spacer"></div><button class="p-go" data-act="p-donex">好的</button></div>';
+}
+
+/* engines: "audio" plays one rendered MP3 for the whole stretch (keeps going with the screen locked);
+   "speech" is the fallback that speaks each cue live and needs the page in front */
+function clockNow() {
+  if (P.engine === 'native') return (P.nPos || 0) + (P.nst && P.nst.playing ? Math.min(0.6, (performance.now() - P.nAt) / 1000) : 0);
+  if (P.engine === 'audio') return AUD.currentTime || 0;
+  return ((P.paused ? P.pauseAt : performance.now()) - P.t0) / 1000;
+}
+function stopEngine() {
+  if (P.engine === 'native') nb('stop');
+  try { AUD.pause(); } catch (e) {}
+  if (P.url) { const u = P.url; P.url = null; try { AUD.removeAttribute('src'); AUD.load(); } catch (e) {} URL.revokeObjectURL(u); }
+  Voice.stop(); wake(false);
+}
+function startTrack(from) {
+  const wasNative = P.engine === 'native';
+  if (wasNative) P.engine = null;          /* a new track simply replaces the old one inside the app's player */
+  stopEngine();
+  const tr = buildTrack(P.sess, from);
+  Object.assign(P, {track: tr, state: 'run', paused: false, idx: from, endDone: false});
+  P.engine = 'speech';
+  if (APP) {
+    const pl = placeTrack(tr), id = 't' + Date.now();
+    const spec = {id, title: sessTitle(P.sess) + ' · 好康复', date: P.date, sid: P.sess.id, from,
+      last: tr.segs[tr.segs.length - 1].idx === P.sess.items.length - 1,
+      segs: tr.segs.map(s => ({ex: P.sess.items[s.idx].ex, name: EX[P.sess.items[s.idx].ex].name, start: s.start, prepEnd: s.prepEnd, end: s.end})),
+      total: pl.total, placed: pl.placed, sil: VI._silence[0]};
+    if (nb('play', JSON.stringify(spec))) Object.assign(P, {engine: 'native', trackId: id, nst: {id, pos: 0, playing: true}, nPos: 0, nAt: performance.now()});
+    else if (wasNative) nb('stop');
+  }
+  if (P.engine === 'speech' && V.state === 'ready') {
+    try {
+      P.url = URL.createObjectURL(renderTrack(tr));
+      AUD.src = P.url;
+      P.engine = 'audio';
+      const pr = AUD.play();
+      if (pr && pr.catch) pr.catch(() => { P.paused = true; if (P.state === 'run') drawRun(clockNow()); toast('点「继续」开始播放'); });
+    } catch (e) { P.engine = 'speech'; }
+  }
+  if (P.engine === 'speech') { P.cq = tr.cues.slice().sort((a, b) => a.t - b.t || a.o - b.o); P.ci = 0; P.t0 = performance.now(); audio(); wake(true); }
+  setMediaSession();
+  drawPlayer();
+  $('#player').scrollTop = 0;
+}
+function currentSeg(t) { const tr = P.track; return tr.segs.find(x => t < x.end) || tr.segs[tr.segs.length - 1]; }
+function markDone(idx) { const it = P.sess.items[idx]; P.res[it.ex] = Object.assign({done: true}, snapOf(it)); saveProgress(); }
+function tick() {
+  if (!P.on || P.state !== 'run' || !P.track) return;
+  const tr = P.track;
+  if (P.engine === 'native') {     /* the app's player reports position, pause state, and items skipped from the notification */
+    const st = nbJSON('state');
+    if (st.id === P.trackId) {
+      const g = P.seekGuard, held = g && performance.now() < g.until && (st.pos || 0) < g.to - 0.5;   /* the player hasn't applied our jump yet */
+      if (!held && (st.pos !== P.nst.pos || st.playing !== P.nst.playing)) { P.nPos = st.pos || 0; P.nAt = performance.now(); }
+      P.nst = st; P.paused = !st.playing && !st.ended;
+      (st.skips || []).forEach(i => { const g = tr.segs[i]; if (g) { const ex = P.sess.items[g.idx].ex; if (!P.res[ex] && P.skip.indexOf(ex) < 0) P.skip.push(ex); } });
+    }
+  }
+  const t = clockNow();
+  if (P.engine === 'speech' && !P.paused) {
+    while (P.ci < P.cq.length && P.cq[P.ci].t <= t) { const c = P.cq[P.ci++]; if (t - c.t < 2.5) Voice.cue(c); }
+  }
+  for (const s of tr.segs) { const ex = P.sess.items[s.idx].ex; if (t >= s.end - 0.05 && !P.res[ex] && P.skip.indexOf(ex) < 0) markDone(s.idx); }
+  const over = P.engine === 'native' ? !!(P.nst && P.nst.ended && P.nst.id === P.trackId) : P.engine === 'audio' ? AUD.ended : t >= tr.total;
+  if (over) { onTrackEnd(); return; }
+  if (document.hidden) {     /* screen locked or another app in front: keep the lock-screen title on the current move */
+    const s = currentSeg(t);
+    if (P.engine === 'audio' && s.idx !== P.idx) { P.idx = s.idx; P.redraw = true; setMediaSession(); }
+  } else if (P.redraw) { P.redraw = false; drawPlayer(); }
+  else drawRun(t);
+}
+function onTrackEnd() {
+  if (P.endDone || !P.track) return;
+  P.endDone = true;
+  P.track.segs.forEach(s => { const ex = P.sess.items[s.idx].ex; if (!P.res[ex] && P.skip.indexOf(ex) < 0) markDone(s.idx); });
+  if (P.engine === 'native') nb('ack', P.trackId);
+  const nx = P.track.segs[P.track.segs.length - 1].idx + 1;
+  stopEngine(); P.track = null;
+  if (nx < P.sess.items.length) { P.idx = nx; P.state = 'ready'; drawPlayer(); }
+  else finishSession(false);
+}
+function drawRun(t) {
+  const tr = P.track, big = $('#pBig'); if (!tr || !big) return;
+  const s = currentSeg(t);
+  if (s.idx !== P.idx) { P.idx = s.idx; setMediaSession(); drawPlayer(); return; }
+  const ex = P.sess.items[s.idx].ex;
+  let b, bc = 'p-big', sub = '', meta = '', frac, kind;
+  if (t < s.prepEnd) {
+    b = '准备'; bc += ' word'; sub = POS_TEXT[POS[ex]] || '马上开始';
+    meta = Math.max(1, Math.ceil(s.prepEnd - t)) + ' 秒后开始'; frac = (t - s.start) / (s.prepEnd - s.start); kind = 'rest';
+  } else {
+    const prog = s.prog, pt = Math.min(t - s.prepEnd, prog.total - 0.001);
+    let pi = 0; while (pi < prog.phases.length - 1 && prog.starts[pi + 1] <= pt) pi++;
+    const ph = prog.phases[pi], left = Math.max(0, Math.ceil(ph.dur - (pt - prog.starts[pi]) - 0.001));
+    kind = prog.ice ? 'ice' : ph.kind; frac = pt / prog.total;
+    if (prog.mode === 'time') { b = mmss(prog.total - pt); sub = prog.rhythm ? ph.label + ' ' + left : ph.label; meta = '共 ' + Math.round(prog.total / 60) + ' 分钟'; }
+    else if (prog.mode === 'reps') { if (ph.count) { b = String(left); bc += ' hold'; sub = '保持'; } else { b = ph.label; bc += ' word'; } meta = '第 ' + ph.rep + ' / ' + prog.n + ' 次'; }
+    else { b = String(left); if (ph.kind === 'hold') bc += ' hold'; sub = ph.label; meta = '第 ' + ph.rep + ' / ' + prog.n + ' 个'; }
+  }
+  if (big.className !== bc) big.className = bc;
+  if (big.textContent !== b) big.textContent = b;
+  $('#pSub').textContent = sub; $('#pMeta').textContent = meta;
+  $('#pArc').style.strokeDashoffset = String(578.05 * (1 - clamp(frac, 0, 1)));
+  $('#pRing').setAttribute('class', 'ring k-' + kind);
+  $('#pPauseBtn').textContent = P.paused ? '继续' : '暂停';
+  $('#pPaused').hidden = !P.paused;
+}
+function pauseRun() {
+  if (P.state !== 'run' || P.paused) return;
+  if (P.engine === 'native') { P.nPos = clockNow(); P.nAt = performance.now(); nb('pause'); if (P.nst) P.nst.playing = false; }
+  else if (P.engine === 'audio') AUD.pause(); else { P.pauseAt = performance.now(); Voice.stop(); }
+  P.paused = true;
+  drawRun(clockNow());
+}
+function resumeRun() {
+  if (P.state !== 'run' || !P.paused) return;
+  P.paused = false;
+  if (P.engine === 'native') { nb('resume'); if (P.nst) P.nst.playing = true; P.nAt = performance.now(); }
+  else if (P.engine === 'audio') { const pr = AUD.play(); if (pr && pr.catch) pr.catch(() => { P.paused = true; drawRun(clockNow()); }); }
+  else P.t0 += performance.now() - P.pauseAt;
+  drawRun(clockNow());
+}
+function skipItem() {
+  if (P.state !== 'run' || !P.track) return;
+  const t = clockNow(), s = currentSeg(t), it = P.sess.items[s.idx];
+  const frac = t <= s.prepEnd ? 0 : (t - s.prepEnd) / s.prog.total;
+  if (frac >= 0.8) markDone(s.idx); else if (!P.res[it.ex] && P.skip.indexOf(it.ex) < 0) P.skip.push(it.ex);
+  const nx = s.idx + 1;
+  if (P.engine === 'native') {     /* the whole round is one track in the app's player: just jump ahead */
+    const ns = P.track.segs.find(x => x.idx === nx);
+    if (ns) { nb('seek', ns.start); P.nPos = ns.start; P.nAt = performance.now(); P.seekGuard = {to: ns.start, until: performance.now() + 2000}; drawRun(ns.start); return; }
+  }
+  stopEngine(); P.track = null;
+  if (nx >= P.sess.items.length) { finishSession(true); return; }
+  if (MANUAL[P.sess.items[nx].ex]) { P.idx = nx; P.state = 'ready'; drawPlayer(); return; }
+  startTrack(nx);
+}
+function skipReady() {
+  P.skip.push(P.sess.items[P.idx].ex);
+  const nx = P.idx + 1;
+  if (nx >= P.sess.items.length) { finishSession(true); return; }
+  if (MANUAL[P.sess.items[nx].ex]) { P.idx = nx; drawPlayer(); return; }
+  startTrack(nx);
+}
+function setMediaSession() {
+  try {
+    if (!('mediaSession' in navigator) || !P.on || P.engine !== 'audio') return;
+    const it = P.sess.items[P.idx];
+    if (window.MediaMetadata) navigator.mediaSession.metadata = new MediaMetadata({title: EX[it.ex].name, artist: sessTitle(P.sess) + ' · 好康复'});
+    const h = (a, f) => { try { navigator.mediaSession.setActionHandler(a, f); } catch (e) {} };
+    h('play', () => resumeRun()); h('pause', () => pauseRun()); h('nexttrack', () => skipItem());
+  } catch (e) {}
+}
+function saveProgress() {
+  if (P.sess.counter || P.mode !== 'live' || !Object.keys(P.res).length) return;
+  const day = dayDoc(P.date), old = day.s[P.sess.id];
+  if (old && old.done) return;
+  day.s[P.sess.id] = {done: false, at: Date.now(), res: clone(P.res), skip: P.skip.slice()};
+  Store.put('d' + P.date, day);
+}
+function finishSession(byTap) {
+  if (P.engine === 'native' && P.trackId) nb('ack', P.trackId);
+  P.state = 'done'; P.track = null; stopEngine();
+  const any = Object.keys(P.res).length;
+  if (P.mode === 'live' && (any || P.sess.counter)) {
+    const day = dayDoc(P.date);
+    if (P.sess.counter) day.ice = day.ice.concat([Date.now()]);
+    else day.s[P.sess.id] = {done: true, at: Date.now(), res: clone(P.res), skip: P.skip.slice()};
+    Store.put('d' + P.date, day);
+  }
+  if (byTap && (any || P.sess.counter)) chime();
+  drawPlayer(); render();
+}
+function requestClose() {
+  if (P.state === 'overview' || P.state === 'done' || P.state === 'ready' && !Object.keys(P.res).length) { closePlayer(); return; }
+  if (P.state === 'run') pauseRun();
+  P.confirm = true;
+  const n = Object.keys(P.res).length, c = $('#pConfirm');
+  c.innerHTML = '<p>' + (n ? '现在结束？做完的 ' + n + ' 项已经记下了，下次可以接着做。' : '现在结束？这一轮还没有做完的项目。') + '</p>' +
+    '<div class="row"><button class="p-pause" data-act="p-cont">继续练</button><button class="p-nextbtn" data-act="p-end">结束</button></div>';
+  c.hidden = false;
+}
+function closePlayer() {
+  if (P.engine === 'native' && P.trackId) nb('ack', P.trackId);
+  P.on = false; P.state = 'closed'; P.confirm = false; P.track = null;
+  stopEngine();
+  if (APP) nb('setBars', false);
+  try { if ('mediaSession' in navigator) navigator.mediaSession.metadata = null; } catch (e) {}
+  $('#player').hidden = true; $('#pConfirm').hidden = true;
+  document.body.classList.remove('noscroll');
+  render();
+}
+AUD.addEventListener('ended', () => {
+  if (P.on && P.engine === 'audio' && P.state === 'run') onTrackEnd();
+  if (Demo.url) Demo.stop();
+});
+AUD.addEventListener('pause', () => { if (P.on && P.engine === 'audio' && P.state === 'run' && P.url && !AUD.ended && !P.paused) { P.paused = true; drawRun(clockNow()); } });
+AUD.addEventListener('play', () => { if (P.on && P.engine === 'audio' && P.state === 'run' && P.paused) { P.paused = false; drawRun(clockNow()); } });
+
+/* a short sample so the sound can be checked before training */
+const Demo = {
+  url: null,
+  stop() { if (this.url) { const u = this.url; this.url = null; try { AUD.pause(); AUD.removeAttribute('src'); AUD.load(); } catch (e) {} URL.revokeObjectURL(u); } },
+  cues() {
+    const c = [[0, ['demo'], 3], [2.6, ['r1', 'lift'], 2], [4.6, ['hold'], 2], [6.6, ['c3'], 2], [7.6, ['c2'], 2], [8.6, ['c1'], 2], [9.6, ['lower'], 2], [12, ['tight'], 2], [14.4, ['relax'], 2]];
+    return c.map((x, i) => ({t: x[0], k: x[1], p: x[2], o: i}));
+  },
+  play() {
+    if (P.on) return;
+    audio();
+    if (V.state === 'ready') {
+      this.stop();
+      this.url = URL.createObjectURL(renderTrack({cues: this.cues(), total: 16}));
+      AUD.src = this.url;
+      const pr = AUD.play(); if (pr && pr.catch) pr.catch(() => toast('没能播放。检查一下静音键和音量。'));
+      return;
+    }
+    if (!Voice.has) { toast('语音包没加载成功，这里也没有自带语音，跟练时会用提示音。', 6000); chime(); return; }
+    this.cues().forEach(c => setTimeout(() => Voice.cue(c), c.t * 1000));
+    if (!Voice.v) setTimeout(() => toast('没找到中文语音，播报可能不准。可以换手机自带的浏览器打开。', 6000), 500);
+  }
+};
+
+/* ---------- day actions ---------- */
+function toggleTick(date, sid, forceOn) {
+  if (date > today()) { toast('还没到这一天。'); return; }
+  const day = dayDoc(date), rec = day.s[sid], wasDone = !!(rec && rec.done);
+  if (wasDone && !forceOn) delete day.s[sid];
+  else day.s[sid] = {done: true, at: Date.now(), manual: true, res: (rec && rec.res) || null};
+  Store.put('d' + date, day); render();
+  toast(wasDone && !forceOn ? '已取消打勾' : '已打勾');
+}
+function setPain(date, v) { if (date > today()) return; const day = dayDoc(date); day.pain = day.pain === v ? null : v; Store.put('d' + date, day); render(); }
+function iceUndo(date) { const day = dayDoc(date); day.ice.pop(); Store.put('d' + date, day); render(); }
+let toastT = 0;
+function toast(html, ms) { const t = $('#toast'); t.innerHTML = html; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, ms || 3000); }
+/* copies a name to paste in WeChat: the account's name goes in WeChat's search box, a move's name in the account's chat */
+function copyText(v, where) {
+  const ok = () => toast('已复制「' + esc(v) + '」，' + (where === 'search' ? '在微信顶部搜索框粘贴就能找到' : '去公众号对话框粘贴'));
+  const fail = () => toast('长按选中复制：<span class="sel">' + esc(v) + '</span>', 9000);
+  if (APP && nb('copyText', v) === true) { ok(); return; }
+  try { const p = navigator.clipboard && navigator.clipboard.writeText(v); if (p && p.then) p.then(ok, fail); else fail(); } catch (e) { fail(); }
+}
+
+/* ---------- views ---------- */
+function stageChips(pod) {
+  const c = [];
+  if (S.st.kind === 'knee') {
+    c.push([pod <= 14 ? '支具伸直位锁定' : pod <= 28 ? '支具解锁 · 0–30°' : pod <= 56 ? '支具 40–110° · 睡觉可不戴' : pod <= 90 ? '支具 120° · 睡觉可不戴' : '支具按复查安排', '']);
+    if (pod >= 1) c.push(S.st.flags.walking ? ['已正常行走', 'ok'] : ['可部分负重 · 尽早脱拐', 'mid']);
+    return c;
+  }
+  c.push(pod <= 21 ? ['戴支具', ''] : pod <= 42 ? ['支具戴满3–6周，复查后可换硬护踝', ''] : ['护踝按复查安排', '']);
+  if (pod <= 14) c.push(['不负重', 'mid']);
+  else if (pod <= 28) c.push(['可部分负重', 'mid']);
+  else c.push([S.st.flags.walking ? '完全负重 · 已正常行走' : '完全负重 · 尽早脱拐', 'ok']);
+  return c;
+}
+function renderHeader() {
+  const date = viewDate(), isToday = date === today(), pod = podOf(date);
+  let title, sub, chips = '';
+  if (pod < 0) { title = '手术前'; sub = md(date) + ' ' + wd(date); }
+  else {
+    title = pod === 0 ? '手术当天' : '术后第<span class="num">' + pod + '</span>天';
+    sub = (pod === 0 ? '' : '第' + Math.ceil(pod / 7) + '周 · ') + md(date) + ' ' + wd(date) + (isToday ? ' · 今天' : '');
+    chips = stageChips(pod).map(([t, c]) => '<span class="chip ' + c + '">' + esc(t) + '</span>').join('');
+  }
+  $('#hdr').innerHTML = '<div class="eyebrow">' + PL().op + ' · 术后康复</div>' +
+    '<div class="dayline"><button class="navbtn" data-act="day" data-d="-1" aria-label="前一天">‹</button>' +
+    '<div class="daytitle"><h1>' + title + '</h1><div class="sub">' + sub + '</div></div>' +
+    '<button class="navbtn" data-act="day" data-d="1" aria-label="后一天">›</button></div>' +
+    (chips ? '<div class="status">' + chips + '</div>' : '') +
+    (isToday ? '' : '<button class="back-today" data-act="gotoday">回到今天</button>');
+  document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === S.tab ? 'true' : 'false'));
+}
+const isDoneOn = (date, s) => { const r = sessRec(date, s.id); return !!(r && r.done); };
+function nextRound(plan, date, nm) { return plan.rounds.find(r => toMin(r.time) > nm + 20 && !isDoneOn(date, r)) || null; }
+function pickNow(plan, date, nm) {
+  const sched = plan.rounds.filter(r => toMin(r.time) <= nm + 20), cur = sched[sched.length - 1];
+  if (cur && !isDoneOn(date, cur)) return {s: cur, kind: 'now'};
+  const up = nextRound(plan, date, nm);
+  if (up) return {s: up, kind: 'next'};
+  const missed = sched.filter(r => !isDoneOn(date, r));
+  if (missed.length) return {s: missed[missed.length - 1], kind: 'catch'};
+  const d = plan.daily.find(s => !s.optional && !isDoneOn(date, s));
+  return d ? {s: d, kind: 'daily'} : null;
+}
+const KEY_ITEMS = () => PL().keyItems;
+function nowCard(plan, date, nm) {
+  const p = pickNow(plan, date, nm);
+  if (!p) return '<section class="nowcard all"><div class="ring0">' + CHECK + '</div><h2>今天的都做完了</h2><p class="hint">可选的冰敷想做也可以做，记得在下面记一下。</p></section>';
+  const pick = p.s, isRound = !!pick.time;
+  const k = p.kind === 'now' ? '现在做' : p.kind === 'next' ? '下一轮 · 还有 ' + span(toMin(pick.time) - nm) : p.kind === 'catch' ? '还可以补做' : '今天还要做';
+  const title = isRound ? '第' + pick.n + '轮 <span class="num">' + pick.time + '</span>' : esc(pick.name);
+  const rec = sessRec(date, pick.id), part = rec && rec.res && Object.keys(rec.res).length;
+  const items = pick.items.map(it => '<li class="' + (part && rec.res[it.ex] ? 'muted' : '') + '"><span>' + esc(EX[it.ex].name) + '</span><span class="dose">' + esc(doseText(it)) + '</span></li>').join('');
+  /* a missed round that held the less frequent items is worth a nudge; missing one toe-only round is not */
+  const miss = plan.rounds.filter(r => r !== pick && !isDoneOn(date, r) && toMin(r.time) + 60 < nm && r.items.some(i => KEY_ITEMS()[i.ex])).pop();
+  const nudge = miss ? '<p class="hint">第' + miss.n + '轮（' + miss.time + '）错过了，里面有' + Object.keys(KEY_ITEMS()).filter(x => miss.items.some(i => i.ex === x)).map(x => KEY_ITEMS()[x]).join('、') + '，有空可以补做。<button class="link" data-act="open" data-sid="' + miss.id + '">补做第' + miss.n + '轮</button></p>' : '';
+  return '<section class="nowcard"><div class="k">' + k + '</div><h2>' + title + '</h2><ul class="itemlist">' + items + '</ul>' +
+    '<button class="big" data-act="open" data-sid="' + pick.id + '">' + (part ? '接着做' : '开始跟练') + ' · 约 ' + sessMin(pick) + ' 分钟</button>' + nudge + '</section>';
+}
+function railSec(plan, date, isToday, nm) {
+  let doneN = 0;
+  const segs = [], rows = plan.rounds.map(r => {
+    const rec = sessRec(date, r.id), done = !!(rec && rec.done), part = !done && rec && rec.res && Object.keys(rec.res).length;
+    const due = isToday && !done && toMin(r.time) <= nm + 20, late = isToday && !done && toMin(r.time) + 60 < nm;
+    if (done) doneN++;
+    const st = done ? 'done' : part ? 'part' : late ? 'late' : due ? 'due' : '';
+    segs.push('<i class="' + (done ? 'done' : part ? 'part' : late ? 'late' : '') + '"></i>');
+    const meta = done ? '<span class="rm">' + hm(rec.at) + (rec.manual ? ' 打勾' : ' 完成') + '</span>' :
+      (late ? '<span class="chip bad">错过了</span>' : '') + (part ? '<span class="chip mid">做了一部分</span>' : '');
+    return '<li class="rr ' + st + '"><div class="rt num">' + r.time + '</div>' +
+      '<button class="dot" data-act="tick" data-sid="' + r.id + '" aria-label="第' + r.n + '轮：' + (done ? '已完成，点一下取消' : '点一下打勾') + '">' + CHECK + '</button>' +
+      '<button class="rb" data-act="open" data-sid="' + r.id + '"><span class="rh">第' + r.n + '轮<span class="rm">约' + sessMin(r) + '分钟</span>' + meta + '</span>' +
+      '<span class="rs">' + chipsFor(r.items) + '</span></button></li>';
+  }).join('');
+  return '<section class="sec"><div class="sec-h"><h3>每天 ' + plan.rounds.length + ' 轮</h3><span class="muted">已完成 ' + doneN + '/' + plan.rounds.length + '</span></div>' +
+    '<div class="segs" aria-hidden="true">' + segs.join('') + '</div>' +
+    '<ol class="rail">' + rows + '</ol><p class="hint">点圆圈直接打勾；点内容进入语音跟练。</p></section>';
+}
+function dailySec(plan, date, isToday) {
+  const cards = plan.daily.map(s => {
+    const rec = sessRec(date, s.id), done = !!(rec && rec.done), part = !done && rec && rec.res && Object.keys(rec.res).length;
+    const list = s.items.map(it => '<li><span>' + esc(EX[it.ex].name) + '</span><span class="dose">' + esc(doseText(it)) + '</span></li>').join('');
+    const label = isToday ? (done ? '再做一遍' : part ? '接着做' : '开始跟练') : '查看';
+    return '<article class="dcard"><div class="dh"><div><h4>' + esc(s.name) + '</h4><div class="dm">' +
+      (s.tag ? '<span class="chip mid">' + esc(s.tag) + '</span>' : '') + (s.optional ? '<span class="chip">可选</span>' : '') +
+      '<span class="muted">约' + sessMin(s) + '分钟</span>' +
+      (done ? '<span class="chip ok">' + hm(rec.at) + (rec.manual ? ' 打勾' : ' 完成') + '</span>' : part ? '<span class="chip mid">做了一部分</span>' : '') + '</div></div>' +
+      '<button class="dot ' + (done ? 'on' : '') + '" data-act="tick" data-sid="' + s.id + '" aria-label="' + esc(s.name) + '：' + (done ? '已完成，点一下取消' : '点一下打勾') + '">' + CHECK + '</button></div>' +
+      '<ul class="itemlist">' + list + '</ul>' + (s.note ? '<p class="hint">' + esc(s.note) + '</p>' : '') +
+      '<button class="btn ' + (isToday && !done ? 'pri' : '') + '" data-act="open" data-sid="' + s.id + '">' + label + '</button></article>';
+  }).join('');
+  return '<section class="sec"><div class="sec-h"><h3>专项练习</h3><span class="muted">每天固定次数，时间自己安排</span></div>' + cards + '</section>';
+}
+function iceSec(date, isToday) {
+  const n = ((S.docs['d' + date] || {}).ice || []).length;
+  return '<section class="sec"><div class="sec-h"><h3>其他时间的冰敷</h3><span class="muted">可选 · 20分钟/次 · 每天2–3次</span></div>' +
+    '<div class="icebar"><span class="num icen">' + n + '</span><span class="muted">次已敷</span>' +
+    (n ? '<button class="link" data-act="ice-undo">撤销一次</button>' : '') +
+    (isToday ? '<button class="btn" data-act="open" data-sid="ice">开始冰敷</button>' : '') + '</div></section>';
+}
+function totalsSec(plan, date) {
+  const d = S.st.dose, F = PL().first, acc = {toe: [0, 0], ankp: [0, 0], thigh: [0, 0], slr: [0, 0], multi: [0, 0], pat: [0, 0]};
+  plan.rounds.forEach(r => {
+    const rec = sessRec(date, r.id) || {}, res = rec.res || {}, all = !!(rec.done && rec.manual);
+    const has = ex => r.items.some(i => i.ex === ex);
+    if (has('toe')) { acc.toe[1] += d.toeMin; if (all || res.toe) acc.toe[0] += (res.toe && res.toe.min) || d.toeMin; }
+    if (has('ankp')) { acc.ankp[1] += d.ankpMin; if (all || res.ankp) acc.ankp[0] += (res.ankp && res.ankp.min) || d.ankpMin; }
+    if (has('pat')) { acc.pat[1]++; if (all || res.pat) acc.pat[0]++; }
+    if (has('thigh')) { acc.thigh[1] += d.thighMin; if (all || res.thigh) acc.thigh[0] += (res.thigh && res.thigh.min) || d.thighMin; }
+    if (has('slr')) { acc.slr[1]++; if (all || res.slr) acc.slr[0]++; }
+    if (has('back')) { acc.multi[1]++; if (all || (res.back && res.out && res.inn)) acc.multi[0]++; }
+  });
+  const rows = [[F, EX[F].name, '分钟'], ['thigh', '大腿绷劲', '分钟'], ['slr', '直抬腿', '组'], ['multi', '各方向抬腿', '组'], ['pat', '推髌骨', '次']]
+    .filter(([k]) => acc[k][1] > 0)
+    .map(([k, n, u]) => { const [a, b] = acc[k]; return '<div class="row"><span>' + n + '</span><span class="v">' + a + '<small>/ ' + b + ' ' + u + '</small></span><span class="bar"><b style="width:' + Math.min(100, Math.round(a / b * 100)) + '%"></b></span></div>'; });
+  if (!rows.length) return '';
+  return '<section class="sec"><div class="sec-h"><h3>' + (date === today() ? '今天' : '这天') + '累计</h3><span class="muted">跟练和打勾会自动算进来</span></div><div class="tot">' + rows.join('') + '</div></section>';
+}
+function painSec(date) {
+  const p = (S.docs['d' + date] || {}).pain;
+  const btns = []; for (let n = 0; n <= 10; n++) btns.push('<button class="' + (p === n ? 'on ' : '') + (n >= 7 ? 'hi' : n >= 4 ? 'md' : '') + '" data-act="pain" data-v="' + n + '" aria-pressed="' + (p === n) + '" aria-label="疼痛' + n + '分">' + n + '</button>');
+  return '<section class="sec"><div class="sec-h"><h3>' + (date === today() ? '今天' : '这天') + '的疼痛</h3><span class="muted">0 不痛 · 10 最痛</span></div>' +
+    '<div class="nrs">' + btns.join('') + '</div><p class="hint">出现休息痛、夜间痛，疼痛越来越重，停练1–2天也不缓解，要及时找专业人士调整方案。</p></section>';
+}
+function milestones() {
+  if (S.st.kind === 'knee') return [
+    {pod: 0, title: '手术当天', tags: ['支具伸直位锁定'], body: '开始踝泵练习（每小时15–20分钟）和大腿绷劲（每小时5–10分钟），做到能正常行走为止。'},
+    {pod: 1, title: '术后第1天', tags: ['可部分负重'], body: '加直抬腿（做到第6周）和被动伸膝（做到和健侧一样，一般2周左右）。随着疼痛减轻，尽早脱拐、练正常步态。'},
+    {pod: 4, title: '第4天', body: '加推髌骨（或拆除棉腿后开始，每天5–6次）和被动屈膝（每天1次，做完立即冰敷20分钟，做到和健侧一样，一般8–12周）；其他时间再冰敷2–3次。'},
+    {pod: 4, end: 7, minor: true, title: '加各方向抬腿', body: '后向直抬腿、外向直抬腿、内侧抬腿，在第4–7天之间开始，做到满6周。'},
+    {pod: 15, title: '第3周', tags: ['支具解锁 0–30°'], body: '支具可以解除角度锁定，逐渐调大活动范围。加单腿站立（第3–4周开始，做到和健侧一样稳）。屈膝参考：第4周 90–110°。'},
+    {pod: 29, title: '第5周', tags: ['支具 40–110°', '睡觉可不戴支具'], body: '满4周后睡觉可以不戴支具。加靠墙静蹲、双腿下蹲、前向弓步、后向弓步（第5–6周开始，做到术后半年）。屈膝参考：第8周 110–130°。'},
+    {pod: 43, title: '第7周', body: '直抬腿和各方向抬腿停了。'},
+    {pod: 57, title: '第9周', tags: ['支具 120°'], body: '屈膝角度继续增加，逐步和健侧一致。'},
+    {pod: 91, title: '术后3个月', body: '支具建议戴满3个月，之后按复查安排。被动屈膝角度一般接近正常。'},
+    {pod: 182, title: '术后半年', body: '靠墙静蹲、双腿下蹲、弓步做到这里。'}
+  ];
+  return [
+    {pod: 0, title: '手术当天', body: '开始脚趾活动、膝关节主动活动、大腿绷劲。'},
+    {pod: 1, title: '第1–2周', tags: ['戴支具', '不负重'], body: '每天7轮：每轮做脚趾活动和膝关节活动，其中几轮加大腿绷劲和直抬腿。'},
+    {pod: 4, end: 7, title: '加各方向抬腿', body: '后向直抬腿、外向直抬腿、内侧抬腿，在第4–7天之间开始，做到满6周。'},
+    {pod: 15, title: '第3周', tags: ['可部分负重'], body: '加被动背伸、被动跖屈，各5–10分钟、每天1次，早期找家属或康复师帮忙。做完立即冰敷20分钟，其他时间还可以再敷2–3次。'},
+    {pod: 22, end: 42, minor: true, title: '可以开始换硬护踝', body: '支具常规戴满3–6周，之后根据门诊复查和自身情况逐渐换成硬护踝。'},
+    {pod: 29, title: '第5周', tags: ['完全负重'], body: '加被动内翻、被动外翻，各10分钟、每天1–2次。随着疼痛减轻尽早脱拐，练正常步态。'},
+    {pod: 43, title: '第7周', body: '直抬腿和各方向抬腿停了。背伸、跖屈角度基本正常后改用进阶做法；加抗阻背伸、跖屈、内翻、外翻，每组10个左右、每天1–2组。'},
+    {pod: 57, title: '第9周', body: '加单腿站立（睁眼30秒、闭眼15秒）、靠墙静蹲、提踵、前向弓步、后向弓步。'},
+    {pod: 182, title: '术后半年', body: '抗阻练习、靠墙静蹲、提踵、弓步做到这里。'}
+  ];
+}
+function nextSec(pod, xp) {
+  const m = milestones().find(x => x.pod > Math.max(pod, xp) && !x.minor);
+  if (!m) return '';
+  return '<section class="next"><span class="k">下一个变化 · ' + md(dateOfPod(m.pod)) + '（还有 ' + (m.pod - pod) + ' 天）</span>' +
+    '<b>' + esc(m.title) + (m.tags ? ' · ' + esc(m.tags.join(' · ')) : '') + '</b><span>' + esc(m.body) + '</span></section>';
+}
+function viewToday() {
+  const date = viewDate(), isToday = date === today(), pod = podOf(date);
+  if (pod < 0) return '<section class="card"><h3>这一天还没做手术</h3><p class="muted">手术日期是 ' + md(S.st.surgery) + '，可以在「设置」里改。</p></section>';
+  const plan = planFor(date), nm = nowMin();
+  let h = appBanner() + (isToday ? nowCard(plan, date, nm) : '<p class="viewing">' + (date < today() ? '这是过去的一天：点圆圈可以补打勾，也能补记疼痛。' : '这是以后的安排，到那天再开始。') + '</p>');
+  if (plan.rounds.length) h += railSec(plan, date, isToday, nm);
+  if (plan.daily.length) h += dailySec(plan, date, isToday);
+  if (plan.extraIce) h += iceSec(date, isToday);
+  h += totalsSec(plan, date);
+  if (date <= today()) h += painSec(date);
+  if (plan.xp > pod) h += '<p class="hint">' + STAGES().filter(s => s.pod <= plan.xp && s.pod > pod).pop().name + '的练习是经医生同意提前开始的；负重和支具还按原来的时间。</p>';
+  h += nextSec(pod, plan.xp);
+  h += '<p class="hint foot">动作不会做：微信关注「北医三院运动医学科」公众号，在对话框输入动作名称就能看视频。跟练时每个动作都能一键复制名称。</p>';
+  return h;
+}
+function viewPlan() {
+  const tp = podOf(today()), xp = stagePod(today()), ms = milestones(), early = earlyOn(today());
+  let cur = -1; ms.forEach((m, i) => { if (!m.minor && m.pod <= xp) cur = i; });
+  const rows = ms.map((m, i) => {
+    const last = m.end != null ? m.end : (ms.slice(i + 1).find(x => !x.minor) || {pod: 99999}).pod - 1;
+    const st = i === cur ? 'cur' : (m.minor ? last < tp : (m.pod < xp && i < cur)) ? 'past' : '';
+    const dsub = m.pod === 0 ? '手术' : m.end != null ? '第' + m.pod + '–' + m.end + '天' : '第' + m.pod + '天';
+    const tags = (m.tags || []).map(t => '<span class="chip ' + (/负重/.test(t) ? 'mid' : '') + '">' + esc(t) + '</span>').join('');
+    const e = early.find(x => x.pod === m.pod);
+    return '<li class="' + st + (m.minor ? ' minor' : '') + '"><div class="d">' + smd(dateOfPod(m.pod)) + '<small>' + dsub + '</small></div><span class="o"></span>' +
+      '<div class="c"><b>' + esc(m.title) + tags + (i === cur ? '<span class="chip ok">现在</span>' : '') + (e ? '<span class="chip">动作已提前 · ' + smd(e.from) + ' 起</span>' : '') + '</b><p>' + esc(m.body) + '</p></div></li>';
+  }).join('');
+  return '<section class="sec"><div class="sec-h"><h3>全程时间表</h3><span class="muted">按术后第一天 ' + md(dateOfPod(1)) + ' 推算</span></div><ol class="tl">' + rows + '</ol></section>' +
+    '<section class="card"><h3>这些要你自己判断，到时在「设置」里勾上</h3><ul>' + (S.st.kind === 'knee' ?
+      '<li>能正常走路以后，踝泵练习、大腿绷劲就不用做了。</li>' +
+      '<li>被动伸膝做到和健侧一样为止，一般2周左右；被动屈膝做到和健侧一样为止，一般8–12周，推髌骨跟着一起停。</li>' +
+      '<li>单腿站立做到和健侧一样稳为止。</li>' +
+      '<li>靠墙静蹲、双腿下蹲、弓步可以每天做，也可以隔天做。</li>' :
+      '<li>能正常走路以后，脚趾活动、膝关节活动、大腿绷劲就不用做了。</li>' +
+      '<li>被动背伸、跖屈、内翻、外翻做到主动角度和健侧一样为止；单腿站立做到和健侧一样为止。</li>' +
+      '<li>靠墙静蹲、提踵、弓步可以每天做，也可以隔天做。</li>') +
+    '<li>医生或康复师同意你提前进入下一阶段的，在「设置 → 进展」里提前开始。</li></ul></section>' + historySec();
+}
+function historySec() {
+  const tp = podOf(today()); if (tp < 1) return '';
+  const rows = [];
+  for (let p = tp; p >= Math.max(1, tp - 29); p--) {
+    const date = dateOfPod(p), plan = planFor(date);
+    const req = plan.rounds.concat(plan.daily.filter(s => !s.optional));
+    const dn = req.filter(s => isDoneOn(date, s)).length;
+    const pain = (S.docs['d' + date] || {}).pain;
+    rows.push('<li><span class="hd num">' + smd(date) + '</span><span class="hp">第' + p + '天</span><span class="hb"><b style="width:' + (req.length ? Math.round(dn / req.length * 100) : 0) + '%"></b></span>' +
+      '<span class="hv num">' + dn + '/' + req.length + '</span><span class="hpn">' + (pain != null ? '痛 ' + pain : '') + '</span></li>');
+  }
+  return '<section class="sec"><div class="sec-h"><h3>打卡记录</h3><span class="muted">最近30天 · 复诊时可以给医生看</span></div><ul class="hist">' + rows.join('') + '</ul></section>';
+}
+function viewNotes() {
+  const R = S.st.rhythm, K = S.st.kind === 'knee';
+  return '<section class="alert"><h3>出现这些情况，尽快复诊手术医生</h3><ol>' +
+    '<li>体温超过38℃，同时手术部位红、肿、热、痛等不适；或者再次受伤。</li>' +
+    '<li>胸闷气短，上肢有挤压疼，或者手活动时上肢疼痛。</li>' +
+    '<li>卧床休息期间，小腿后侧肌群有挤压疼，或者勾脚时小腿疼痛。</li></ol></section>' +
+    '<section class="card"><h3>怎么看待康复中的疼痛</h3><ol>' +
+    '<li>被动关节活动度练习中的疼痛不能过量：要适度、能忍受，冰敷后应明显缓解。</li>' +
+    '<li>出现休息痛或夜间痛、疼痛持续加重，并且停练1–2天仍不缓解，要及时找专业人士调整康复方案。</li>' +
+    '<li>主动活动中应避免疼痛，可以根据自身情况调整组数和次数。</li></ol></section>' +
+    '<section class="card"><h3>每个动作的疼痛标准</h3><table class="ptable"><tbody>' + (K ?
+    '<tr><td><span class="chip ok">无痛为宜</span></td><td>踝泵练习、大腿绷劲</td></tr>' +
+    '<tr><td><span class="chip ok">轻微或完全无痛</span></td><td>直抬腿。不加重肿胀、疼痛时，可以逐渐加到每天4–5组</td></tr>' +
+    '<tr><td><span class="chip ok">轻度疼痛或无痛</span></td><td>推髌骨</td></tr>' +
+    '<tr><td><span class="chip ok">必须完全无痛</span></td><td>各方向抬腿、单腿站立、靠墙静蹲、双腿下蹲、弓步</td></tr>' +
+    '<tr><td><span class="chip mid">轻到中度疼痛</span></td><td>被动伸膝，冰敷后疼痛应该消失</td></tr>' +
+    '<tr><td><span class="chip mid">中度疼痛、能忍受</span></td><td>被动屈膝</td></tr></tbody></table></section>' :
+    '<tr><td><span class="chip ok">无痛为宜</span></td><td>脚趾活动、膝关节主动活动、大腿绷劲</td></tr>' +
+    '<tr><td><span class="chip ok">轻微或完全无痛</span></td><td>直抬腿。不加重肿胀、疼痛时，可以逐渐加到每天4–5组</td></tr>' +
+    '<tr><td><span class="chip ok">必须完全无痛</span></td><td>各方向抬腿、抗阻练习、单腿站立、靠墙静蹲、提踵、弓步</td></tr>' +
+    '<tr><td><span class="chip mid">中度疼痛、能忍受</span></td><td>被动背伸、被动跖屈（包括进阶做法）</td></tr>' +
+    '<tr><td><span class="chip mid">疼痛能忍受</span></td><td>被动内翻、被动外翻</td></tr></tbody></table></section>') +
+    '<section class="card"><h3>动作质量最重要</h3><p>动作做不标准的时候，不要多次重复。</p></section>' + (K ?
+    '<section class="card"><h3>支具和负重</h3><ul>' +
+    '<li>术后2周内支具伸直位锁定。做被动屈膝时要摘掉支具，所以锁定不影响屈膝练习。</li>' +
+    '<li>第3周可以解除角度锁定，逐渐增加支具的活动范围，方便日常戴着支具时屈伸膝关节（角度见下面的表）。</li>' +
+    '<li>满4周后，睡觉时可以不戴支具。支具建议戴3个月。</li>' +
+    '<li>术后第1天可以部分负重。随着疼痛减轻、肌肉功能恢复，根据自身能力尽早脱拐，重建正常步态（公众号里搜「正常步态」）。</li></ul></section>' +
+    '<section class="card"><h3>伸膝、屈膝、推髌骨</h3><ul>' +
+    '<li>被动伸膝：术前伸膝困难的，在膝关节上方的大腿肌肉处（靠近膝关节）加2–3公斤重物（甚至更重），或请家人帮忙压直。不要把重物直接压在膝关节上，会增加髌骨和股骨之间的压力，可能引起新的损伤。</li>' +
+    '<li>被动屈膝：脚尖始终朝前，膝关节和脚尖方向一致、成一条直线，防止膝关节往里扣（屈曲内翻）。坐位垂腿、顶墙、坐位抱腿、仰卧垂腿四种方式，每次选一种就行。</li>' +
+    '<li>推髌骨：术后第4天或拆除棉腿后开始。计划没写做到什么时候，App 里跟着被动屈膝一起停。</li></ul></section>' +
+    '<section class="card"><h3>被动屈膝参考角度</h3><table class="ptable atable"><thead><tr><th></th><th>屈膝练习</th><th>支具调节</th></tr></thead><tbody>' +
+    '<tr><td>第4天</td><td>开始被动屈膝</td><td>0°</td></tr>' +
+    '<tr><td>第1–4周</td><td>90–110°</td><td>0–30°</td></tr>' +
+    '<tr><td>第5–8周</td><td>110–130°</td><td>40–110°</td></tr>' +
+    '<tr><td>第9–12周</td><td>继续增加，逐步和健侧一致</td><td>120°</td></tr></tbody></table>' +
+    '<p class="hint">疼痛不能过量：要适度、能忍受，冰敷后明显缓解。能忍受的情况下尽量弯到最大；和参考角度差得不多，就不要过分追求，每周有进步或更灵活就行。满3个月左右接近正常。</p></section>' :
+    '<section class="card"><h3>支具和负重</h3><ul>' +
+    '<li>支具常规要戴满3–6周，之后根据门诊复查和自身情况逐渐换成硬护踝。</li>' +
+    '<li>术后第1–2周不负重；第3周起可以部分负重；第5周起完全负重。</li>' +
+    '<li>随着疼痛减轻、肌肉功能恢复，根据自身能力尽早脱拐，重建正常步态（公众号里搜「正常步态」）。</li></ul></section>') +
+    '<section class="card"><h3>看动作视频、问问题</h3><ul>' +
+    '<li>微信关注「北医三院运动医学科」公众号，在对话框输入动作名称（计划里下划线上的文字，比如「冰敷」）就能看视频。</li>' +
+    '<li>康复中遇到问题：下载北医三院APP，进入【专家咨询】→【运动医学科】→【运动医学康复团队】，有康复师在线解答。</li></ul>' +
+    '<button class="btn" data-act="copy" data-w="search" data-v="北医三院运动医学科">复制公众号名</button></section>' +
+    '<section class="card"><h3>语音跟练的节奏</h3><ul>' +
+    '<li>' + (K ? '踝泵练习' : '脚趾活动、膝关节活动') + '：只计总时间，中途报剩余时间，到点说「时间到」。</li>' +
+    '<li>大腿绷劲：「用力绷紧」' + R.thighOn + '秒，「放松」' + R.thighOff + '秒，一直循环到时间到。</li>' +
+    '<li>直抬腿、各方向抬腿：「抬起」后保持' + S.st.dose.slrHold + '秒（最后3秒倒数），再「慢慢放下」。</li>' + (K ?
+    '<li>推髌骨、被动伸膝、被动屈膝：计总时间，中途报剩余时间，到点提醒。</li>' +
+    '<li>双腿下蹲：「慢慢蹲下」「站起来」；弓步：「迈步下蹲」「起来收回」。每次都报数。</li></ul>' :
+    '<li>抗阻背伸、跖屈、内翻、外翻：用力到底停留' + S.st.dose.strHold + '秒，再「慢慢放下」。</li>' +
+    '<li>提踵：踮起脚跟停留' + S.st.dose.calfHold + '秒，再「慢慢落下」。</li></ul>') +
+    '<p class="muted">绷紧、放松和保持的秒数是作者补充的做法；抬起约2秒、放下约3秒、两次之间歇3秒' + (K ? '' : '，以及膝关节活动每轮3分钟') + '，是 App 的默认值，计划里没写。和医生、康复师的嘱咐不一样时，以他们为准。</p></section>';
+}
+function viewSettings() {
+  const st = S.st, R = st.rhythm;
+  const step = k => { const D = curDoses()[k], v = st.dose[k]; return '<div class="stepper"><button data-act="step" data-k="' + k + '" data-d="-1" ' + (v <= D.min ? 'disabled' : '') + ' aria-label="减少' + esc(D.l) + '">−</button><b class="num">' + v + '</b><span class="su">' + D.u + '</span><button data-act="step" data-k="' + k + '" data-d="1" ' + (v >= D.max ? 'disabled' : '') + ' aria-label="增加' + esc(D.l) + '">+</button></div>'; };
+  const doses = DOSE_GROUPS[st.kind].map(([g, ks]) => '<div class="grp">' + g + '</div>' + ks.map(k => '<div class="srow"><div class="sl">' + esc(curDoses()[k].l) + '</div><div class="sr">' + esc(curDoses()[k].r) + '</div>' + step(k) + '</div>').join('')).join('');
+  const rst = (k, lo) => { const v = R[k]; return '<div class="stepper"><button data-act="rstep" data-k="' + k + '" data-d="-1" ' + (v <= lo ? 'disabled' : '') + ' aria-label="减少">−</button><b class="num">' + v + '</b><span class="su">秒</span><button data-act="rstep" data-k="' + k + '" data-d="1" ' + (v >= 10 ? 'disabled' : '') + ' aria-label="增加">+</button></div>'; };
+  const sw = (act, k, on, label) => '<button class="sw" role="switch" aria-checked="' + (on ? 'true' : 'false') + '" data-act="' + act + '"' + (k ? ' data-k="' + k + '"' : '') + ' aria-label="' + esc(label) + '"></button>';
+  const store = APP ? '存在这台手机的 App 里。安装新版本不会丢；卸载 App 会清掉。' :
+    WEB && S.mode === 'local' ? (IOS ? '只存在这台 iPhone 的浏览器里，换手机看不到。从主屏幕图标打开的和在 Safari 里打开的是两份记录，互相看不到；清除 Safari 的历史记录和网站数据，会清掉 Safari 里的那份。' :
+      '只存在这台手机的这个浏览器里，换手机、换浏览器都看不到；清除浏览器数据会清掉。') :
+    {db:'存在你的 Claude 账号里，只有你自己能看到；换手机、换浏览器打开也在。', local: '只存在这台设备的浏览器里，换设备看不到。', memory: '这里存不了，关掉页面后记录会丢。', loading: '正在连接…'}[S.mode];
+  const vstat = APP ? '语音内置在 App 里：锁屏、切到别的 App 也会继续播。' :
+    WEB && V.state === 'ready' ? '语音包已就绪：跟练时锁屏、切到别的 App 也会继续播；别的 App 一出声音（比如刷视频），这边会暂停。' :
+    {ready:'语音包已就绪：跟练时锁屏、切到别的 App 也会继续播。', loading: '语音包加载中…', idle: '语音包加载中…', failed: '语音包没加载成功：跟练时改用手机自带语音，需要页面开着。'}[V.state];
+  const other = PLANS[st.kind === 'knee' ? 'ankle' : 'knee'];
+  return '<section class="sec"><h3>康复计划</h3><div class="srow"><div class="sl">' + PL().joint + ' · ' + PL().op + '</div><div class="sr">北医三院运动医学科发给患者的术后康复计划</div>' +
+    (S.kindAsk ? '' : '<button class="btn" data-act="kind-ask">换成' + other.joint + '</button>') + '</div>' +
+    (S.kindAsk ? '<div class="earlyq"><p>换成' + other.joint + '（' + other.op + '）的计划？今天起按新计划安排，以前的打卡也会按新计划显示，可能对不上。只在选错了的时候换。</p><div class="earlyq-b">' +
+      '<button class="btn pri" data-act="kind-go">确定换</button><button class="btn" data-act="kind-no">不换了</button></div></div>' : '') + '</section>' +
+    '<section class="sec"><h3>日期</h3><div class="field"><label for="set-pod1">术后第一天</label><input type="date" id="set-pod1" value="' + dateOfPod(1) + '"></div>' +
+    '<p class="hint">手术当天是 ' + md(st.surgery) + '，今天是术后第 ' + podOf(today()) + ' 天。</p></section>' +
+    '<section class="sec"><h3>每轮时间</h3><div class="times">' + st.times.map((t, i) => '<div class="field"><label for="set-t' + i + '">第' + (i + 1) + '轮</label><input type="time" id="set-t' + i + '" data-i="' + i + '" value="' + t + '"></div>').join('') + '</div>' +
+    '<p class="hint">' + EX[PL().first].name + '要在每天6–8个小时里各做一次，7轮正好。</p></section>' +
+    '<section class="sec"><h3>声音</h3>' +
+    '<div class="srow"><div class="sl">语音提示</div><div class="sr">关掉后只用「嘀」的提示音，节奏不变</div>' + sw('voice', '', st.voice.on, '语音提示') + '</div>' +
+    '<div class="srow"><div class="sl">试听</div><div class="sr">' + vstat + '</div><button class="btn" data-act="vtest">试一下</button></div></section>' +
+    (APP ? appRemindSec(sw) : WEB ? webRemindSec() : '') +
+    '<section class="sec"><h3>大腿绷劲的节奏</h3>' +
+    '<div class="srow"><div class="sl">跟着节奏提示</div><div class="sr">喊「用力绷紧」「放松」；关掉就只报剩余时间</div>' + sw('rtoggle', 'thigh', R.thigh, '大腿绷劲跟节奏') + '</div>' +
+    (R.thigh ? '<div class="srow"><div class="sl">每次绷紧</div><div class="sr">默认5秒</div>' + rst('thighOn', 3) + '</div><div class="srow"><div class="sl">每次放松</div><div class="sr">默认2秒</div>' + rst('thighOff', 1) + '</div>' : '') + '</section>' +
+    '<section class="sec"><h3>运动量</h3><p class="hint">计划给了范围的，只能在范围里调。</p>' + doses + '</section>' +
+    '<section class="sec"><h3>进展</h3><p class="hint">计划里有几项是「做到和健侧一样为止」，到了就勾上，对应的动作不再安排。</p>' +
+    PL().flags.map(([k, l, d]) => '<div class="srow"><div class="sl">' + l + '</div><div class="sr">' + d + '</div>' + sw('flag', k, st.flags[k], l) + '</div>').join('') + earlySec() + '</section>' +
+    '<section class="sec"><h3>记录存在哪</h3><p class="hint">' + store + '</p></section>' +
+    (WEB && (INAPP || IOS) && webTip(false) ? '<section class="sec"><h3>打开方式</h3>' + webTip(false) + '</section>' : '') +
+    '<section class="sec"><h3>关于</h3>' +
+    '<div class="kv"><span>作者</span><b>' + esc(AUTHOR) + '</b></div>' +
+    '<div class="kv"><span>致谢</span><b>北医三院运动医学科提供的科学康复计划</b></div>' +
+    (APP ? '<div class="kv"><span>版本</span><b class="num">' + esc(nbJSON('info').version || '') + '</b></div>' : '') +
+    (WEB ? '<div class="kv"><span>版本</span><b>网页版 <span class="num">' + esc(String(window.HKF_WEB)) + '</span></b></div>' : '') +
+    '<p class="hint">康复计划来自北医三院运动医学科发给患者的纸质版，感谢他们。这个 App 由个人制作，不是医院官方出品；和医生、康复师的嘱咐不一样时，以他们为准。</p></section>';
+}
+/* ---------- app only: first launch, reminders, permissions, picking up a round played while the page was closed ---------- */
+function viewSetup() {
+  const on = S.setupRemind !== false, kd = S.setupKind;
+  const kbtn = k => '<button class="kind" data-act="setup-kind" data-k="' + k + '" aria-pressed="' + (kd === k) + '"><b>' + PLANS[k].joint + '</b><span>' + PLANS[k].op + '</span></button>';
+  return '<section class="setup-card"><h1>好康复</h1>' +
+    '<p class="lead">按北医三院运动医学科发给患者的术后康复计划，每天自动排好要做的练习，语音带着你做，做完自动记下来。</p>' + (WEB ? webTip(true) : '') +
+    '<div class="q"><div class="ql">做的是哪个手术？</div><div class="kinds">' + kbtn('knee') + kbtn('ankle') + '</div>' +
+    '<p class="hint">目前有这两份计划。别的手术时间安排可能不一样，以你的医生给的计划为准。</p></div>' +
+    '<div class="q"><label for="setup-pod1">术后第一天是哪天？</label><input type="date" id="setup-pod1" value="' + (S.setupPod1 || today()) + '">' +
+    '<p class="hint">手术当天算第0天，手术第二天就是术后第一天。</p></div>' +
+    (APP ? '<div class="q"><div class="srow"><div class="sl">每轮开始时提醒我</div><div class="sr">每天8点到20点，每2小时一轮；时间以后可以在设置里改</div>' +
+      '<button class="sw" role="switch" aria-checked="' + on + '" data-act="setup-remind" aria-label="每轮开始时提醒我"></button></div></div>' : '') +
+    '<button class="big" data-act="setup-done">开始使用</button>' +
+    (WEB ? '<p class="hint fine">个人制作，不是医院官方出品；一切以医生和康复师的嘱咐为准。</p>' : '') + '</section>';
+}
+/* web only: how to open it so it keeps working (a real browser, the home screen), and the Android app */
+const APKOK = !IOS && !/OpenHarmony|ArkWeb/i.test(UA);   /* phones that can install the Android app (and computers, to find the link) */
+const APPTIP_KEY = 'hkf-apptip-off';
+const appTipOff = () => { try { return localStorage.getItem(APPTIP_KEY) === '1'; } catch (e) { return false; } };
+function appBanner() {
+  if (!WEB || !APKOK || INAPP || appTipOff()) return '';
+  return '<div class="appbar"><div><b>安卓手机推荐用 App</b><span>到点提醒，锁屏、切到别的 App 都不停，语音还能和别的 App 的声音一起放。</span></div>' +
+    '<a class="btn pri" href="' + APK_PAGE + '">下载</a><button class="x" data-act="apptip-off" aria-label="不再提示">×</button></div>';
+}
+function webTip(setup) {
+  if (INAPP) return '<div class="webtip"><b>请用浏览器打开</b><p>现在是在微信、小红书这类 App 里打开的网页：锁屏后可能没声音，记录也可能被清掉。点右上角「···」，选「在浏览器打开」' + (IOS ? '（选 Safari）' : '') + '。</p></div>';
+  if (STANDALONE()) return '';
+  if (IOS) return '<div class="webtip"><b>' + (setup ? 'iPhone 暂时先用网页版' : '添加到主屏幕') + '</b>' +
+    (setup ? '<p>iPhone 暂时没有 App，网页版功能比 App 少一些：没有到点提醒，别的 App 一出声音，带练语音会停。</p>' : '') +
+    '<p>' + (setup ? '先添加到主屏幕再用：' : '') + '点 Safari 的分享按钮（方框加向上的箭头；新版 iOS 先点右下角「···」），选「添加到主屏幕」。以后从桌面的「好康复」图标打开：全屏显示，没网也能用。</p>' +
+    '<p class="muted">' + (setup ? '从图标打开的和在 Safari 里打开的记录不互通，所以先添加、再从图标打开来设置。' : '从图标打开是另一份记录，要重新设置一次，这里打过的勾不会带过去。') + '</p></div>';
+  if (APKOK) return '<div class="webtip"><b>安卓手机推荐用 App</b><p>App 能到点提醒，锁屏、切到别的 App 都不停，带练语音还能和别的 App 的声音一起放。<a href="' + APK_PAGE + '">下载安装包</a>，不装也能直接在这里用。</p></div>';
+  return '';
+}
+function webRemindSec() {
+  const alarm = IOS ? '可以打开 iPhone 自带的「时钟」→「闹钟」，按下面的每轮时间各设一个，「重复」选每天：' : '可以在手机自带的「时钟」里，按下面的每轮时间各设一个闹钟，每天重复：';
+  return '<section class="sec"><h3>提醒</h3><p class="hint">网页版没法到点发提醒。' + alarm + '</p>' +
+    '<div class="alarms">' + S.st.times.map((t, i) => '<span class="chip"><span class="num">' + t + '</span> 第' + (i + 1) + '轮</span>').join('') + '</div>' +
+    (APKOK ? '<div class="srow"><div class="sl">安卓手机推荐用 App</div><div class="sr">到点自动提醒，做完的那轮不再提醒；带练语音还能和别的 App 的声音一起放。</div><a class="btn" href="' + APK_PAGE + '">去下载</a></div>' : '') +
+    '</section>';
+}
+function appRemindSec(sw) {
+  const inf = nbJSON('info'), r = S.st.remind;
+  return '<section class="sec"><h3>提醒</h3>' +
+    '<div class="srow"><div class="sl">每轮开始时提醒</div><div class="sr">按上面的每轮时间发通知；已经做完的那轮不再提醒</div>' + sw('remind', '', r.on, '每轮开始时提醒') + '</div>' +
+    '<div class="srow"><div class="sl">专项练习提醒</div><div class="sr">角度练习、力量训练这些每天固定次数的，到这个时间还没做就提醒一次</div><input type="time" id="set-daily" value="' + r.daily + '"></div>' +
+    '<div class="srow"><div class="sl">通知</div><div class="sr">' + (inf.notif ? '已允许' : '还没允许，收不到提醒') + '</div>' +
+      (inf.notif ? '<button class="btn" data-act="open-notif">通知设置</button>' : '<button class="btn pri" data-act="perm-notif">允许通知</button>') + '</div>' +
+    '<div class="srow"><div class="sl">电池优化</div><div class="sr">' + (inf.battery ? '已设为不限制' : '系统省电时可能推迟提醒') + '</div>' +
+      (inf.battery ? '<span class="chip ok">已设置</span>' : '<button class="btn" data-act="open-battery">设为不限制</button>') + '</div>' +
+    '<div class="srow"><div class="sl">自启动、后台运行</div><div class="sr">小米、华为、荣耀、OPPO、vivo 等手机还要在应用设置里允许「自启动」和「后台运行」，不然关掉 App 后提醒可能不来</div><button class="btn" data-act="open-app">应用设置</button></div>' +
+    '<div class="srow"><div class="sl">测试提醒</div><div class="sr">5秒后发一条通知，看看能不能收到</div><button class="btn" data-act="remind-test">试一下</button></div></section>';
+}
+/* settings → 进展: start the next stage early (one step, after the doctor agrees), or undo it from today */
+function earlySec() {
+  const t = today(), pod = podOf(t), xp = stagePod(t);
+  if (pod < 1) return '';
+  const act = earlyOn(t).filter(e => !e.to).sort((a, b) => a.pod - b.pod), top = act.length ? act[act.length - 1].pod : 0;
+  const next = STAGES().find(s => s.pod > xp);
+  let h = '<div class="grp">提前进入下一阶段</div><p class="hint">勾上上面几项，对应的动作就不做了，但下一阶段要到计划的日子才开始。' +
+    '阶段按术后天数排，是给韧带长牢留的时间，角度和健侧一样了不等于能提前加练。复诊时医生或康复师同意了，再在这里提前开始；只提前动作，负重和支具还按原来的时间。</p>';
+  act.forEach(e => {
+    const s = STAGES().find(x => x.pod === e.pod);
+    h += '<div class="srow"><div class="sl">已提前进入' + s.name + '阶段</div><div class="sr">' + md(e.from) + ' 起；计划是 ' + md(dateOfPod(e.pod)) + '</div>' +
+      (e.pod === top ? '<button class="btn" data-act="early-undo" data-p="' + e.pod + '">撤销</button>' : '') + '</div>';
+  });
+  if (next) {
+    const ask = S.earlyAsk === next.pod;
+    h += '<div class="srow"><div class="sl">' + next.name + '阶段 · 计划 ' + md(dateOfPod(next.pod)) + ' 开始</div><div class="sr">' + next.adds + '</div>' +
+      (ask ? '' : '<button class="btn" data-act="early-ask" data-p="' + next.pod + '">提前开始</button>') + '</div>' +
+      (ask ? '<div class="earlyq"><p>医生或康复师同意你从今天开始做' + next.name + '的练习了吗？</p><div class="earlyq-b">' +
+        '<button class="btn pri" data-act="early-go" data-p="' + next.pod + '">同意了，从今天开始</button><button class="btn" data-act="early-no">还没有</button></div></div>' : '');
+  }
+  return h;
+}
+const atTime = (date, hhmm) => { const [y, m, d] = parts(date), [h, mi] = hhmm.split(':').map(Number); return new Date(y, m - 1, d, h, mi, 0, 0).getTime(); };
+function reminderItems() {
+  const out = [], now = Date.now();
+  for (let k = 0; k < 21; k++) {
+    const date = addDays(today(), k);
+    if (podOf(date) < 0) continue;
+    const plan = planFor(date);
+    plan.rounds.forEach(r => {
+      const at = atTime(date, r.time);
+      if (at > now && !isDoneOn(date, r)) out.push({at, date, sid: r.id, title: '第' + r.n + '轮 · ' + r.time + '（约' + sessMin(r) + '分钟）', text: chipList(r.items).join(' · ') + '。点开就能跟练。'});
+    });
+    const ds = plan.daily.filter(s => !s.optional && !isDoneOn(date, s));
+    if (ds.length) { const at = atTime(date, S.st.remind.daily); if (at > now) out.push({at, date, sid: ds[0].id, title: '今天的专项练习还没做', text: ds.map(s => s.name).join('、')}); }
+  }
+  return out;
+}
+let remindLast = '', remindT = 0;
+function syncReminders(immediate) {
+  if (!APP || !S.ready) return;
+  clearTimeout(remindT);
+  remindT = setTimeout(() => {
+    const on = S.st.setupDone && S.st.remind.on;
+    const payload = JSON.stringify({on, items: on ? reminderItems() : []});
+    if (payload === remindLast) return;
+    remindLast = payload;
+    nb('setReminders', payload);
+  }, immediate ? 0 : 800);
+}
+function nativeOnLaunch() {
+  if (!APP || P.on || !S.st.setupDone) return;
+  const lt = nbJSON('lastTrack'), sp = lt.spec, st = lt.state;
+  if (!sp || !st || !sp.id || st.id !== sp.id || lt.acked === sp.id) return;
+  const live = nbJSON('state');
+  if (live.id === sp.id && live.active && !live.ended) { attachNative(sp, live); return; }
+  const day = dayDoc(sp.date), rec = day.s[sp.sid];
+  if (!(rec && rec.done)) {
+    const res = Object.assign({}, (rec && rec.res) || {}), sk = st.skips || [];
+    sp.segs.forEach((g, i) => { if (sk.indexOf(i) < 0 && (st.maxPos || 0) >= g.end - 0.05 && !res[g.ex]) res[g.ex] = {done: true}; });
+    if (Object.keys(res).length) { day.s[sp.sid] = {done: !!(st.ended && sp.last), at: Date.now(), res, skip: []}; Store.put('d' + sp.date, day); }
+  }
+  nb('ack', sp.id);
+}
+function attachNative(sp, live) {
+  const sess = sessionById(sp.date, sp.sid); if (!sess) return;
+  openPlayer(sp.date, sp.sid);
+  const from = sp.from || 0, tr = buildTrack(sess, from);
+  Object.assign(P, {track: tr, state: 'run', engine: 'native', trackId: sp.id, idx: from, endDone: false, paused: !live.playing, nst: live, nPos: live.pos || 0, nAt: performance.now()});
+  drawPlayer();
+}
+window.__appBack = () => {
+  if (P.on) {
+    if (P.confirm) { P.confirm = false; $('#pConfirm').hidden = true; if (P.state === 'run') resumeRun(); }
+    else requestClose();
+    return true;
+  }
+  if (APP && !S.st.setupDone) return false;
+  if (S.view) { S.view = null; render(); return true; }
+  if (S.tab !== 'today') { S.tab = 'today'; render(); return true; }
+  return false;
+};
+window.__appResume = () => { if (!S.ready) return; nativeOnLaunch(); render(true); if (P.on && P.state !== 'run') drawPlayer(); syncReminders(true); };
+window.__appOpen = () => {
+  if (!S.ready || !S.st.setupDone) return;
+  const s = nb('takeLaunch') || '';
+  if (!s || P.on) return;
+  const [date, sid] = s.split('|');
+  S.tab = 'today'; S.view = null; render();
+  if (date === today() && sessionById(date, sid)) openPlayer(date, sid);
+};
+window.__appPerm = () => { render(true); syncReminders(true); };
+
+function render(soft) {
+  const setup = (APP || WEB) && !S.st.setupDone, main = $('#main'), ae = document.activeElement;
+  document.body.classList.toggle('setup', setup);
+  if (setup) { if (!(soft && ae && main.contains(ae) && ae.tagName === 'INPUT')) main.innerHTML = viewSetup(); return; }
+  renderHeader();
+  if (soft && S.tab === 'settings' && ae && main.contains(ae) && ae.tagName === 'INPUT') return;
+  main.innerHTML = S.tab === 'plan' ? viewPlan() : S.tab === 'notes' ? viewNotes() : S.tab === 'settings' ? viewSettings() : viewToday();
+  syncReminders();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+  const a = b.dataset.act, ds = b.dataset;
+  switch (a) {
+    case 'tab': {
+      S.tab = ds.tab; render();
+      const hdr = $('#hdr'), top = hdr.offsetTop + hdr.offsetHeight;
+      if (window.scrollY > top) window.scrollTo(0, top);
+      break;
+    }
+    case 'day': { const v = addDays(viewDate(), +ds.d); S.view = v === today() ? null : v; render(); break; }
+    case 'gotoday': S.view = null; render(); break;
+    case 'open': Demo.stop(); openPlayer(viewDate(), ds.sid); break;
+    case 'tick': toggleTick(viewDate(), ds.sid); break;
+    case 'pain': setPain(viewDate(), +ds.v); break;
+    case 'ice-undo': iceUndo(viewDate()); break;
+    case 'copy': copyText(ds.v, ds.w); break;
+    case 'step': { const D = curDoses()[ds.k]; S.st.dose[ds.k] = clamp(S.st.dose[ds.k] + (+ds.d) * (D.step || 1), D.min, D.max); saveSettings(); render(); break; }
+    case 'rstep': S.st.rhythm[ds.k] = clamp(S.st.rhythm[ds.k] + (+ds.d), ds.k === 'thighOff' ? 1 : 3, 10); saveSettings(); render(); break;
+    case 'rtoggle': S.st.rhythm[ds.k] = !S.st.rhythm[ds.k]; saveSettings(); render(); break;
+    case 'flag': S.st.flags[ds.k] = !S.st.flags[ds.k]; saveSettings(); render(); break;
+    case 'early-ask': S.earlyAsk = +ds.p; render(); break;
+    case 'early-no': S.earlyAsk = null; render(); break;
+    case 'early-go': {
+      const p = +ds.p, t = today(), s = STAGES().find(x => x.pod === p);
+      S.earlyAsk = null;
+      if (s && stagePod(t) < p) { S.st.early.push({pod: p, from: t, to: null}); saveSettings(); toast('已提前进入' + s.name + '阶段，今天的练习已经换好了。'); }
+      render(); break;
+    }
+    case 'early-undo': {
+      /* undoing a stage also undoes any later one; started today means it never happened, otherwise it ends today */
+      const p = +ds.p, t = today();
+      S.st.early = S.st.early.filter(e => e.pod < p || e.to || e.from < t).map(e => e.pod < p || e.to ? e : Object.assign({}, e, {to: t}));
+      saveSettings(); toast('已撤销，今天起按原来的阶段安排。'); render(); break;
+    }
+    case 'voice': {
+      S.st.voice.on = !S.st.voice.on; saveSettings(); render();
+      if (P.on) {
+        refreshPlayerTop();
+        if (P.state === 'run' && P.engine === 'audio') { startTrack(P.idx); toast(S.st.voice.on ? '改成语音提示了，这一项从头开始' : '改成只用提示音了，这一项从头开始'); }
+      }
+      break;
+    }
+    case 'vtest': Demo.play(); break;
+    case 'p-start': startTrack(P.idx); break;
+    case 'p-go': startTrack(P.idx); break;
+    case 'p-skipready': skipReady(); break;
+    case 'p-pause': if (P.paused) resumeRun(); else pauseRun(); break;
+    case 'p-next': skipItem(); break;
+    case 'p-close': requestClose(); break;
+    case 'p-end': P.confirm = false; closePlayer(); break;
+    case 'p-cont': P.confirm = false; $('#pConfirm').hidden = true; if (P.state === 'run') resumeRun(); break;
+    case 'p-donex': closePlayer(); break;
+    case 'p-mark': toggleTick(P.date, P.sess.id, true); closePlayer(); break;
+    case 'p-meth': S.st.method[ds.ex] = +ds.i; saveSettings(); drawPlayer(); break;
+    case 'setup-remind': { const el = $('#setup-pod1'); if (el) S.setupPod1 = el.value; S.setupRemind = S.setupRemind === false; render(); break; }
+    case 'setup-kind': { const el = $('#setup-pod1'); if (el) S.setupPod1 = el.value; S.setupKind = ds.k; render(); break; }
+    case 'kind-ask': S.kindAsk = true; render(); break;
+    case 'kind-no': S.kindAsk = false; render(); break;
+    case 'apptip-off': try { localStorage.setItem(APPTIP_KEY, '1'); } catch (e) {} render(); toast('以后可以在「设置」→「提醒」里找到下载。'); break;
+    case 'kind-go': setKind(S.st.kind === 'knee' ? 'ankle' : 'knee'); S.kindAsk = false; S.earlyAsk = null; S.view = null; saveSettings(); render(); toast('已换成' + PL().joint + '的计划。'); break;
+    case 'setup-done': {
+      const v = ($('#setup-pod1') || {}).value || '';
+      if (!PLANS[S.setupKind]) { toast('先选一下做的是哪个手术'); break; }
+      if (!/^\d{4}-\d\d-\d\d$/.test(v)) { toast('先选一下术后第一天的日期'); break; }
+      setKind(S.setupKind); S.st.surgery = addDays(v, -1); S.st.setupDone = true; S.st.remind.on = S.setupRemind !== false;
+      saveSettings(); S.tab = 'today'; S.view = null; render(); window.scrollTo(0, 0);
+      if (S.st.remind.on && !nbJSON('info').notif) nb('requestNotif');
+      syncReminders(true);
+      break;
+    }
+    case 'remind': S.st.remind.on = !S.st.remind.on; saveSettings(); render(); if (S.st.remind.on && !nbJSON('info').notif) nb('requestNotif'); break;
+    case 'remind-test': nb('testReminder'); toast('5秒后会收到一条测试通知。收不到的话，看看上面几项设置。', 5000); break;
+    case 'perm-notif': { const inf = nbJSON('info'); if (inf.sdk >= 33 && !S.askedNotif) { S.askedNotif = true; nb('requestNotif'); } else nb('openNotifSettings'); break; }
+    case 'open-notif': nb('openNotifSettings'); break;
+    case 'open-battery': nb('openBattery'); break;
+    case 'open-app': nb('openAppSettings'); break;
+  }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'set-pod1') { if (/^\d{4}-\d\d-\d\d$/.test(t.value)) { S.st.surgery = addDays(t.value, -1); S.view = null; saveSettings(); render(); } }
+  else if (t.id === 'set-daily') { if (/^\d\d:\d\d$/.test(t.value)) { S.st.remind.daily = t.value; saveSettings(); render(); } }
+  else if (/^set-t\d$/.test(t.id)) {
+    if (/^\d\d:\d\d$/.test(t.value)) { const ts = S.st.times.slice(); ts[+t.dataset.i] = t.value; ts.sort(); S.st.times = ts; saveSettings(); render(); }
+  }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && P.on && !P.confirm) requestClose(); });
+document.addEventListener('visibilitychange', () => {
+  if (!P.on || P.state !== 'run' || P.engine !== 'speech') { if (!document.hidden && P.on && P.state === 'run') drawRun(clockNow()); return; }
+  if (document.hidden) { const s = currentSeg(clockNow()); if (s && s.prog.mode !== 'time') pauseRun(); }
+  else wake(true);
+});
+setInterval(tick, 150);
+setInterval(() => { if (!P.on && S.tab === 'today' && !document.hidden) render(true); }, 30000);
+
+const h0 = (location.hash || '').slice(1);
+if (['today', 'plan', 'notes', 'settings'].includes(h0)) S.tab = h0;
+applySettings();
+Voice.init();
+render();
+Store.init().then(() => {
+  S.ready = true;
+  if (APP) { nativeOnLaunch(); render(true); window.__appOpen(); syncReminders(true); }
+});
+loadVoice();
+})();
+</script>
+
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+好康复（网页版）
+Copyright © 2026 20261013机场院区31号床（好康复作者）
+
+除下面「不在本许可范围内」列出的部分外，本仓库中的代码、页面设计、图标和作者撰写的文字，
+采用「署名—非商业性使用—相同方式共享 4.0 协议国际版」（CC BY-NC-SA 4.0）许可：
+
+- 署名：您必须给出适当的署名，提供指向本许可协议的链接，同时标明是否（对原始作品）作了修改。
+- 非商业性使用：您不得将本作品用于商业目的。
+- 相同方式共享：如果您再混合、转换或者基于本作品进行创作，您必须基于与原先许可协议相同的许可协议分发您贡献的作品。
+
+协议说明：https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans
+协议全文：https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.zh-hans
+
+不在本许可范围内
+
+1. 康复计划：各阶段的练习项目、次数、时间安排和注意事项，来自北医三院运动医学科发给患者的
+   术后康复计划（纸质版），相关权利归原作者所有。这里只是为了方便患者按计划练习而整理，
+   并注明出处，本许可不对这部分内容授权。
+2. 语音提示（voice.mp3）：用 k2-fsa/icefall 的 Matcha-TTS 中文模型合成；该模型用标贝科技
+   （DataBaker）中文标准女声音库训练，该音库仅限非商业用途。语音文件只能用于非商业目的。
+
+声明
+
+本项目由个人制作，不是北医三院或任何医疗机构的官方产品。内容仅供参考，不构成医疗建议；
+康复怎么做，以医生和康复师的嘱咐为准。本项目按「现状」提供，不附带任何形式的担保。
+
+----------------------------------------------------------------------
+
+Haokangfu (web version)
+Copyright © 2026 20261013机场院区31号床 (author of Haokangfu)
+
+Except for the parts listed under "Not covered" below, the code, page design, icons and text
+written by the author in this repository are licensed under the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0):
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+Not covered
+
+1. The rehabilitation plans (exercises, doses, schedules and precautions) come from the
+   post-operative rehabilitation handouts of the Department of Sports Medicine, Peking University
+   Third Hospital. All rights remain with their authors; they are reproduced here, with credit,
+   only to help patients follow them.
+2. The voice prompts (voice.mp3) were synthesized with the k2-fsa/icefall Matcha-TTS Chinese
+   model, trained on the DataBaker Chinese Standard Mandarin Speech Corpus, which is for
+   non-commercial use only. The voice file may be used for non-commercial purposes only.
+
+This is a personal project, not an official product of Peking University Third Hospital or any
+medical institution. It is not medical advice; follow your doctor's and physiotherapist's
+instructions. Provided "as is", without warranty of any kind.
